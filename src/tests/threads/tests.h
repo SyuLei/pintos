@@ -11,6 +11,7 @@ extern test_func test_alarm_simultaneous;
 extern test_func test_alarm_priority;
 extern test_func test_alarm_zero;
 extern test_func test_alarm_negative;
+extern test_func test_hello;
 extern test_func test_priority_change;
 extern test_func test_priority_donate_one;
 extern test_func test_priority_donate_multiple;
