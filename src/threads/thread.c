@@ -27,7 +27,7 @@
 /* List of processes in THREAD_READY state, that is, processes
    that are ready to run but not actually running. */
 static struct list ready_list;
-
+static struct list sleep_list;
 /* Idle thread. */
 static struct thread *idle_thread;
 
