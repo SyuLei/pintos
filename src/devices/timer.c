@@ -24,10 +24,17 @@ static int64_t ticks;
    Initialized by timer_calibrate(). */
 static unsigned loops_per_tick;
 
+/* List of blocked threads */
+static struct list blocked_list;
+
+
 static intr_handler_func timer_interrupt;
 static bool too_many_loops (unsigned loops);
 static void busy_wait (int64_t loops);
 static void real_time_sleep (int64_t num, int32_t denom);
+
+
+static bool wakeup_early(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux);
 
 /* Sets up the 8254 Programmable Interval Timer (PIT) to
    interrupt PIT_FREQ times per second, and registers the
@@ -44,6 +51,8 @@ timer_init (void)
   outb (0x40, count >> 8);
 
   intr_register_ext (0x20, timer_interrupt, "8254 Timer");
+
+  list_init(&blocked_list);
 }
 
 /* Calibrates loops_per_tick, used to implement brief delays. */
@@ -99,8 +108,17 @@ timer_sleep (int64_t ticks)
   int64_t start = timer_ticks ();
 
   ASSERT (intr_get_level () == INTR_ON);
-  while (timer_elapsed (start) < ticks) 
-    thread_yield ();
+
+  struct thread *t = thread_current();
+
+  enum intr_level old_level = intr_disable();
+
+  t->end = start + ticks;
+  list_insert_ordered(&blocked_list, &t->elem, (list_less_func *)&wakeup_early, NULL);
+
+  thread_block();
+
+  intr_set_level(old_level);
 }
 
 /* Suspends execution for approximately MS milliseconds. */
@@ -136,6 +154,23 @@ static void
 timer_interrupt (struct intr_frame *args UNUSED)
 {
   ticks++;
+
+
+  struct thread *t;
+
+  while(!list_empty(&blocked_list))
+  {
+    t = list_entry(list_front(&blocked_list), struct thread, elem);
+
+    if(ticks < t->end)
+      break;
+    else
+    {
+      list_pop_front(&blocked_list);
+      thread_unblock(t);
+    }
+  }
+
   thread_tick ();
 }
 
@@ -202,3 +237,14 @@ real_time_sleep (int64_t num, int32_t denom)
     }
 }
 
+/* function for compare wakeup time */
+static bool wakeup_early(const struct list_elem *a_elem,const struct list_elem *b_elem, void *aux)
+{
+  const struct thread *a = list_entry(a_elem, struct thread, elem);
+  const struct thread *b = list_entry(b_elem, struct thread, elem);
+
+  if(a->end > b->end)
+    return false;
+  else
+    return true;
+}
