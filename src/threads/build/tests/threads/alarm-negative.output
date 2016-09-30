@@ -1,4 +1,4 @@
-Writing command line to /tmp/hJ1RkdFT37.dsk...
+Writing command line to /tmp/cDIpyNvhOs.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run alarm-negative
@@ -13,7 +13,7 @@ Executing 'alarm-negative':
 (alarm-negative) end
 Execution of 'alarm-negative' complete.
 Timer: 37 ticks
-Thread: 1 idle ticks, 38 kernel ticks, 0 user ticks
+Thread: 1 idle ticks, 39 kernel ticks, 0 user ticks
 Console: 405 characters output
 Keyboard: 0 keys pressed
 Powering off...

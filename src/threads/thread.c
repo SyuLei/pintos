@@ -71,6 +71,8 @@ static void schedule (void);
 void schedule_tail (struct thread *prev);
 static tid_t allocate_tid (void);
 
+static bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux);
+
 /* Initializes the threading system by transforming the code
    that's currently running into a thread.  This can't work in
    general and it is possible in this case only because loader.S
@@ -235,7 +237,7 @@ thread_unblock (struct thread *t)
 
   old_level = intr_disable ();
   ASSERT (t->status == THREAD_BLOCKED);
-  list_push_back (&ready_list, &t->elem);
+  list_insert_ordered(&ready_list, &t->elem, (list_less_func *)&higher_priority, NULL);
   t->status = THREAD_READY;
   intr_set_level (old_level);
 }
@@ -303,8 +305,8 @@ thread_yield (void)
   ASSERT (!intr_context ());
 
   old_level = intr_disable ();
-  if (curr != idle_thread) 
-    list_push_back (&ready_list, &curr->elem);
+  if (curr != idle_thread)
+    list_insert_ordered(&ready_list, &curr->elem, (list_less_func *)&higher_priority, NULL);
   curr->status = THREAD_READY;
   schedule ();
   intr_set_level (old_level);
@@ -556,3 +558,14 @@ allocate_tid (void)
    Used by switch.S, which can't figure it out on its own. */
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
 
+/* function for compare threads' priority */
+static bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux)
+{
+  const struct thread *a = list_entry(a_elem, struct thread, elem);
+  const struct thread *b = list_entry(b_elem, struct thread, elem);
+
+  if(a->priority < b->priority)
+    return false;
+  else
+    return true;
+}
