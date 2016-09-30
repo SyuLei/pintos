@@ -1,4 +1,4 @@
-Writing command line to /tmp/Oo54Muxco4.dsk...
+Writing command line to /tmp/ClPzu1we9Y.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run priority-donate-nest
@@ -21,8 +21,8 @@ Executing 'priority-donate-nest':
 (priority-donate-nest) Low thread should have priority 31.  Actual priority: 31.
 (priority-donate-nest) end
 Execution of 'priority-donate-nest' complete.
-Timer: 129 ticks
-Thread: 0 idle ticks, 132 kernel ticks, 0 user ticks
+Timer: 127 ticks
+Thread: 0 idle ticks, 130 kernel ticks, 0 user ticks
 Console: 1060 characters output
 Keyboard: 0 keys pressed
 Powering off...

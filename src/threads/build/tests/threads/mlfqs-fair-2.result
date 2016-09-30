@@ -1,6 +1,1 @@
-FAIL
-Some tick counts were missing or differed from those expected by more than 50.
-thread   actual <-> expected explanation
------- -------- --- -------- ----------------------------------------
-     0        0 <<< 1500     Too small, by 1450.
-     1     3001 >>> 1500     Too big, by 1451.
+PASS

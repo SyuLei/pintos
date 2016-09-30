@@ -1,8 +1,8 @@
 FAIL
 Kernel panic in run: PANIC at ../../threads/synch.c:234 in lock_release(): assertion `lock_held_by_current_thread (lock)' failed.
-Call stack: 0xc010710c 0xc01026cc 0xc0109cea 0xc0100e77
+Call stack: 0xc010710c 0xc01026dc 0xc0109cea 0xc0100e8b
 Translation of call stack:
 0xc010710c: debug_panic (.../../lib/kernel/debug.c:34)
-0xc01026cc: lock_release (...../../threads/synch.c:236)
+0xc01026dc: lock_release (...../../threads/synch.c:236)
 0xc0109cea: b_thread_func (...ity-donate-multiple2.c:83)
-0xc0100e77: kernel_thread (..../../threads/thread.c:406)
+0xc0100e8b: kernel_thread (..../../threads/thread.c:409)

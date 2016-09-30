@@ -201,6 +201,9 @@ thread_create (const char *name, int priority,
   /* Add to run queue. */
   thread_unblock (t);
 
+  if(priority > thread_get_priority())
+    thread_yield();
+
   return tid;
 }
 
@@ -468,7 +471,12 @@ next_thread_to_run (void)
   if (list_empty (&ready_list))
     return idle_thread;
   else
+  {
+    //struct list_elem *e = list_max(&ready_list, (list_less_func *)&higher_priority, NULL);
+
+    //return list_entry(e, struct thread, elem);
     return list_entry (list_pop_front (&ready_list), struct thread, elem);
+  }
 }
 
 /* Completes a thread switch by activating the new thread's page
@@ -564,8 +572,5 @@ static bool higher_priority(const struct list_elem *a_elem, const struct list_el
   const struct thread *a = list_entry(a_elem, struct thread, elem);
   const struct thread *b = list_entry(b_elem, struct thread, elem);
 
-  if(a->priority < b->priority)
-    return false;
-  else
-    return true;
+  return a->priority > b->priority;
 }

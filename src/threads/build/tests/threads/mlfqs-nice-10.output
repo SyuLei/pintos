@@ -1,4 +1,4 @@
-Writing command line to /tmp/Os6i1C2L4E.dsk...
+Writing command line to /tmp/GCnvUdw7GY.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -mlfqs run mlfqs-nice-10
@@ -10,22 +10,22 @@ Boot complete.
 Executing 'mlfqs-nice-10':
 (mlfqs-nice-10) begin
 (mlfqs-nice-10) Starting 10 threads...
-(mlfqs-nice-10) Starting threads took 25 ticks.
+(mlfqs-nice-10) Starting threads took 26 ticks.
 (mlfqs-nice-10) Sleeping 40 seconds to let threads run, please wait...
-(mlfqs-nice-10) Thread 0 received 0 ticks.
-(mlfqs-nice-10) Thread 1 received 0 ticks.
-(mlfqs-nice-10) Thread 2 received 0 ticks.
-(mlfqs-nice-10) Thread 3 received 0 ticks.
-(mlfqs-nice-10) Thread 4 received 0 ticks.
-(mlfqs-nice-10) Thread 5 received 0 ticks.
-(mlfqs-nice-10) Thread 6 received 0 ticks.
-(mlfqs-nice-10) Thread 7 received 0 ticks.
-(mlfqs-nice-10) Thread 8 received 0 ticks.
-(mlfqs-nice-10) Thread 9 received 3000 ticks.
+(mlfqs-nice-10) Thread 0 received 301 ticks.
+(mlfqs-nice-10) Thread 1 received 300 ticks.
+(mlfqs-nice-10) Thread 2 received 301 ticks.
+(mlfqs-nice-10) Thread 3 received 301 ticks.
+(mlfqs-nice-10) Thread 4 received 300 ticks.
+(mlfqs-nice-10) Thread 5 received 300 ticks.
+(mlfqs-nice-10) Thread 6 received 300 ticks.
+(mlfqs-nice-10) Thread 7 received 301 ticks.
+(mlfqs-nice-10) Thread 8 received 300 ticks.
+(mlfqs-nice-10) Thread 9 received 300 ticks.
 (mlfqs-nice-10) end
 Execution of 'mlfqs-nice-10' complete.
-Timer: 4131 ticks
-Thread: 989 idle ticks, 3145 kernel ticks, 0 user ticks
-Console: 982 characters output
+Timer: 4135 ticks
+Thread: 991 idle ticks, 3147 kernel ticks, 0 user ticks
+Console: 999 characters output
 Keyboard: 0 keys pressed
 Powering off...

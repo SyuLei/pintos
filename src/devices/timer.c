@@ -243,8 +243,5 @@ static bool wakeup_early(const struct list_elem *a_elem,const struct list_elem *
   const struct thread *a = list_entry(a_elem, struct thread, elem);
   const struct thread *b = list_entry(b_elem, struct thread, elem);
 
-  if(a->end > b->end)
-    return false;
-  else
-    return true;
+  return a->end < b->end;
 }

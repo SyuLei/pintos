@@ -1,4 +1,4 @@
-Writing command line to /tmp/n2vA7P1YAl.dsk...
+Writing command line to /tmp/e32xM9ZyLw.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run priority-donate-chain
@@ -17,22 +17,18 @@ Executing 'priority-donate-chain':
 (priority-donate-chain) main should have priority 9.  Actual priority: 0.
 (priority-donate-chain) interloper 3 finished.
 (priority-donate-chain) main should have priority 12.  Actual priority: 0.
+(priority-donate-chain) interloper 4 finished.
 (priority-donate-chain) main should have priority 15.  Actual priority: 0.
 (priority-donate-chain) interloper 5 finished.
-(priority-donate-chain) interloper 4 finished.
 (priority-donate-chain) main should have priority 18.  Actual priority: 0.
 (priority-donate-chain) interloper 6 finished.
 (priority-donate-chain) main should have priority 21.  Actual priority: 0.
+(priority-donate-chain) interloper 7 finished.
 (priority-donate-chain) main finishing with priority 0.
-(priority-donate-chain) end(priority-donate-chain) interloper 7 finished.
-(priority-donate-chain) thread 1 got lock
-Kernel PANIC at ../../threads/synch.c:234 in lock_release(): assertion `lock_held_by_current_thread (lock)' failed.
-Call stack: 0xc010710c 0xc01026cc 0xc010aa90 0xc0100e77.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Timer: 196 ticks
-Thread: 0 idle ticks, 196 kernel ticks, 0 user ticks
-Console: 1687 characters output
+(priority-donate-chain) end
+Execution of 'priority-donate-chain' complete.
+Timer: 191 ticks
+Thread: 0 idle ticks, 195 kernel ticks, 0 user ticks
+Console: 1366 characters output
 Keyboard: 0 keys pressed
 Powering off...
