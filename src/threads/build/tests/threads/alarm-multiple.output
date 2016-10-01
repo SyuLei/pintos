@@ -1,4 +1,4 @@
-Writing command line to /tmp/E6LKfPyWwl.dsk...
+Writing command line to /tmp/cJVhZcztPG.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run alarm-multiple
@@ -51,8 +51,8 @@ Executing 'alarm-multiple':
 (alarm-multiple) thread 4: duration=50, iteration=7, product=350
 (alarm-multiple) end
 Execution of 'alarm-multiple' complete.
-Timer: 928 ticks
-Thread: 550 idle ticks, 381 kernel ticks, 0 user ticks
+Timer: 929 ticks
+Thread: 550 idle ticks, 382 kernel ticks, 0 user ticks
 Console: 2952 characters output
 Keyboard: 0 keys pressed
 Powering off...

@@ -1,4 +1,4 @@
-Writing command line to /tmp/2gGBI23tWq.dsk...
+Writing command line to /tmp/yl3Ne5qEhe.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run priority-donate-one
@@ -9,8 +9,8 @@ Calibrating timer...  204,600 loops/s.
 Boot complete.
 Executing 'priority-donate-one':
 (priority-donate-one) begin
-(priority-donate-one) This thread should have priority 32.  Actual priority: 31.
-(priority-donate-one) This thread should have priority 33.  Actual priority: 31.
+(priority-donate-one) This thread should have priority 32.  Actual priority: 32.
+(priority-donate-one) This thread should have priority 33.  Actual priority: 33.
 (priority-donate-one) acquire2: got the lock
 (priority-donate-one) acquire2: done
 (priority-donate-one) acquire1: got the lock
