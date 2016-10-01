@@ -30,7 +30,7 @@
 00000000000i[     ]   SB16 support: no
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support:  
-00000000000i[MEM0 ] allocated memory at 0x7f8e2eb85010. after alignment, vector=0x7f8e2eb86000
+00000000000i[MEM0 ] allocated memory at 0x7f3ff1430010. after alignment, vector=0x7f3ff1431000
 00000000000i[MEM0 ] 4.00MB
 00000000000i[MEM0 ] rom at 0xf0000/65536 ('/usr/local/share/bochs/BIOS-bochs-latest')
 00000000000i[MEM0 ] rom at 0xc0000/32768 ('/usr/local/share/bochs/VGABIOS-lgpl-latest')
@@ -46,7 +46,7 @@
 00000000000i[     ] init_mem of 'extfpuirq' plugin device by virtual method
 00000000000i[     ] init_mem of 'speaker' plugin device by virtual method
 00000000000i[     ] init_dev of 'harddrv' plugin device by virtual method
-00000000000i[HD   ] HD on ata0-0: '/tmp/v0sdDVLsgy.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata0-0: '/tmp/XXo5yiuzbm.dsk' 'flat' mode 
 00000000000i[HD   ] Using boot sequence disk, none, none
 00000000000i[HD   ] Floppy boot signature check is enabled
 00000000000i[     ] init_dev of 'keyboard' plugin device by virtual method
@@ -73,27 +73,28 @@
 00000786523e[HD   ] ata0: device set to 1 which does not exist
 00000786815e[HD   ] ata1: device set to 0 which does not exist
 00000787108e[HD   ] ata1: device set to 1 which does not exist
-00011023954p[UNMP ] >>PANIC<< Shutdown port: shutdown requested
-00011023954i[SYS  ] Last time is 11
-00011023954i[NGUI ] bx_nogui_gui_c::exit() not implemented yet.
-00011023954i[CPU  ] protected mode
-00011023954i[CPU  ] CS.d_b = 32 bit
-00011023954i[CPU  ] SS.d_b = 32 bit
-00011023954i[CPU  ] | EAX=0000006e  EBX=c010b974  ECX=c002ff86  EDX=ffff8900
-00011023954i[CPU  ] | ESP=c002ff70  EBP=c002ff88  ESI=00000000  EDI=c010cd2d
-00011023954i[CPU  ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af pf cf
-00011023954i[CPU  ] | SEG selector     base    limit G D
-00011023954i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
-00011023954i[CPU  ] |  CS:0008( 0001| 0|  0) 00000000 000fffff 1 1
-00011023954i[CPU  ] |  DS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-00011023954i[CPU  ] |  SS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-00011023954i[CPU  ] |  ES:0010( 0002| 0|  0) 00000000 000fffff 1 1
-00011023954i[CPU  ] |  FS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-00011023954i[CPU  ] |  GS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-00011023954i[CPU  ] | EIP=c0100067 (c0100066)
-00011023954i[CPU  ] | CR0=0x80010015 CR1=0 CR2=0x00000000
-00011023954i[CPU  ] | CR3=0x00112000 CR4=0x00000000
-00011023954i[CPU  ] >> ee
-00011023954i[CPU  ] >> : out dx, al
-00011023954i[     ] restoring default signal behavior
-00011023954i[CTRL ] quit_sim called with exit code 1
+01902273728p[     ] >>PANIC<< SIGNAL 2 caught
+01902273728i[SYS  ] Last time is 1902
+01902273728i[NGUI ] bx_nogui_gui_c::exit() not implemented yet.
+01902273728i[CPU  ] protected mode
+01902273728i[CPU  ] CS.d_b = 32 bit
+01902273728i[CPU  ] SS.d_b = 32 bit
+01902273728i[CPU  ] | EAX=c0115000  EBX=c0101024  ECX=00000003  EDX=00000001
+01902273728i[CPU  ] | ESP=c0115fc8  EBP=c0115fd0  ESI=00000000  EDI=00000000
+01902273728i[CPU  ] | IOPL=0 id vip vif ac vm rf nt of df IF tf SF zf af pf cf
+01902273728i[CPU  ] | SEG selector     base    limit G D
+01902273728i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
+01902273728i[CPU  ] |  CS:0008( 0001| 0|  0) 00000000 000fffff 1 1
+01902273728i[CPU  ] |  DS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+01902273728i[CPU  ] |  SS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+01902273728i[CPU  ] |  ES:0010( 0002| 0|  0) 00000000 000fffff 1 1
+01902273728i[CPU  ] |  FS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+01902273728i[CPU  ] |  GS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+01902273728i[CPU  ] | EIP=c010104b (c010104b)
+01902273728i[CPU  ] | CR0=0x80010015 CR1=0 CR2=0x00000000
+01902273728i[CPU  ] | CR3=0x00113000 CR4=0x00000000
+01902273728i[CPU  ] >> eb
+01902273728i[CPU  ] >> f2
+01902273728i[CPU  ] >> : jmp .+0xfffffff2
+01902273728i[     ] restoring default signal behavior
+01902273728i[CTRL ] quit_sim called with exit code 1

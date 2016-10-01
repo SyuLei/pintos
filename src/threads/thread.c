@@ -71,8 +71,6 @@ static void schedule (void);
 void schedule_tail (struct thread *prev);
 static tid_t allocate_tid (void);
 
-//static bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux);
-
 /* Initializes the threading system by transforming the code
    that's currently running into a thread.  This can't work in
    general and it is possible in this case only because loader.S
@@ -135,7 +133,6 @@ thread_tick (void)
   else
     kernel_ticks++;
 
-  /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)
     intr_yield_on_return ();
 }
@@ -320,6 +317,23 @@ void
 thread_set_priority (int new_priority) 
 {
   thread_current ()->priority = new_priority;
+
+  if(!list_empty(&ready_list))
+  {
+    struct thread *next_thread = list_entry (list_front(&ready_list), struct thread, elem);
+
+    if(next_thread->priority > new_priority)
+      thread_yield();
+  }
+
+/*
+  struct thread *t = next_thread_to_run();
+
+  if(t = idle_thread)
+    printf("(thread_set_priority) : next id idle thread!\n");
+  else if(t->priority > thread_get_priority())
+    printf("you have to yield!\n");
+*/
 }
 
 /* Returns the current thread's priority. */
@@ -444,6 +458,7 @@ init_thread (struct thread *t, const char *name, int priority)
   strlcpy (t->name, name, sizeof t->name);
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
+  t->original_priority = -1;
   t->magic = THREAD_MAGIC;
 }
 
@@ -568,4 +583,13 @@ bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_e
   const struct thread *b = list_entry(b_elem, struct thread, elem);
 
   return a->priority > b->priority;
+}
+
+void donate_priority(struct thread *t, int new_priority)
+{
+  ASSERT (PRI_MIN <= new_priority && new_priority <= PRI_MAX);
+  if(t->original_priority == -1)
+    t->original_priority = t->priority;
+
+  t->priority = new_priority;
 }

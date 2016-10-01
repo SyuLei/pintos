@@ -154,7 +154,6 @@ timer_interrupt (struct intr_frame *args UNUSED)
 {
   ticks++;
 
-
   struct thread *t;
 
   while(!list_empty(&blocked_list))
