@@ -318,22 +318,8 @@ thread_set_priority (int new_priority)
 {
   thread_current ()->priority = new_priority;
 
-  if(!list_empty(&ready_list))
-  {
-    struct thread *next_thread = list_entry (list_front(&ready_list), struct thread, elem);
-
-    if(next_thread->priority > new_priority)
-      thread_yield();
-  }
-
-/*
-  struct thread *t = next_thread_to_run();
-
-  if(t = idle_thread)
-    printf("(thread_set_priority) : next id idle thread!\n");
-  else if(t->priority > thread_get_priority())
-    printf("you have to yield!\n");
-*/
+  if(higher_priority_ready())
+    thread_yield();
 }
 
 /* Returns the current thread's priority. */
@@ -592,4 +578,19 @@ void donate_priority(struct thread *t, int new_priority)
     t->original_priority = t->priority;
 
   t->priority = new_priority;
+}
+
+bool higher_priority_ready(void)
+{
+  if(list_empty(&ready_list))
+    return false;
+  else
+  {
+    struct thread *next_thread = list_entry(list_front(&ready_list), struct thread, elem);
+
+    if(next_thread->priority > thread_get_priority())
+      return true;
+    else
+      return false;
+  }
 }

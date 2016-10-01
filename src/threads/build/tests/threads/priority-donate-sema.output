@@ -1,4 +1,4 @@
-Writing command line to /tmp/BjN1ZZJcml.dsk...
+Writing command line to /tmp/472VRssthr.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run priority-donate-sema
@@ -10,11 +10,12 @@ Boot complete.
 Executing 'priority-donate-sema':
 (priority-donate-sema) begin
 (priority-donate-sema) Thread L acquired lock.
+(priority-donate-sema) Thread M finished.
 (priority-donate-sema) Main thread finished.
 (priority-donate-sema) end
 Execution of 'priority-donate-sema' complete.
-Timer: 54 ticks
-Thread: 0 idle ticks, 57 kernel ticks, 0 user ticks
-Console: 505 characters output
+Timer: 61 ticks
+Thread: 0 idle ticks, 64 kernel ticks, 0 user ticks
+Console: 547 characters output
 Keyboard: 0 keys pressed
 Powering off...

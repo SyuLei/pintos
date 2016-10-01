@@ -1,4 +1,4 @@
-Writing command line to /tmp/Cgu5ATylSs.dsk...
+Writing command line to /tmp/30oZZuZZR2.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run priority-change
@@ -17,7 +17,7 @@ Executing 'priority-change':
 (priority-change) end
 Execution of 'priority-change' complete.
 Timer: 70 ticks
-Thread: 0 idle ticks, 72 kernel ticks, 0 user ticks
+Thread: 0 idle ticks, 73 kernel ticks, 0 user ticks
 Console: 645 characters output
 Keyboard: 0 keys pressed
 Powering off...
