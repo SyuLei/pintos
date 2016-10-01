@@ -168,10 +168,10 @@ timer_interrupt (struct intr_frame *args UNUSED)
       thread_unblock(t);
     }
   }
-/*
+
   if(higher_priority_ready())
-    thread_yield();
-*/
+    intr_yield_on_return();
+
   thread_tick ();
 }
 
