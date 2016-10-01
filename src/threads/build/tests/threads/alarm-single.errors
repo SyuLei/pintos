@@ -7,5 +7,5 @@
 00000000000i[     ] using log file bochsout.txt
 ========================================================================
 Bochs is exiting with the following message:
-[UNMP ] Shutdown port: shutdown requested
+[     ] SIGNAL 2 caught
 ========================================================================
