@@ -71,7 +71,7 @@ static void schedule (void);
 void schedule_tail (struct thread *prev);
 static tid_t allocate_tid (void);
 
-static bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux);
+//static bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux);
 
 /* Initializes the threading system by transforming the code
    that's currently running into a thread.  This can't work in
@@ -562,7 +562,7 @@ allocate_tid (void)
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
 
 /* function for compare threads' priority */
-static bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux)
+bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux)
 {
   const struct thread *a = list_entry(a_elem, struct thread, elem);
   const struct thread *b = list_entry(b_elem, struct thread, elem);

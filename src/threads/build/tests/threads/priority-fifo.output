@@ -1,4 +1,4 @@
-Writing command line to /tmp/4vIEDvzVGH.dsk...
+Writing command line to /tmp/JApNbpSv9a.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run priority-fifo
@@ -13,7 +13,7 @@ Executing 'priority-fifo':
 (priority-fifo) If the order varies then there is a bug.
 (priority-fifo) end
 Kernel PANIC at ../../threads/synch.c:196 in lock_acquire(): assertion `lock != NULL' failed.
-Call stack: 0xc010710c 0xc01028f0 0xc010a689 0xc0100e8b.
+Call stack: 0xc010711c 0xc0102900 0xc010a699 0xc0100e8b.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.

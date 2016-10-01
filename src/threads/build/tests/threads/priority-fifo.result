@@ -1,8 +1,8 @@
 FAIL
 Kernel panic in run: PANIC at ../../threads/synch.c:196 in lock_acquire(): assertion `lock != NULL' failed.
-Call stack: 0xc010710c 0xc01028f0 0xc010a689 0xc0100e8b
+Call stack: 0xc010711c 0xc0102900 0xc010a699 0xc0100e8b
 Translation of call stack:
-0xc010710c: debug_panic (.../../lib/kernel/debug.c:34)
-0xc01028f0: lock_acquire (...../../threads/synch.c:197)
-0xc010a689: simple_thread_func (...hreads/priority-fifo.c:95)
+0xc010711c: debug_panic (.../../lib/kernel/debug.c:34)
+0xc0102900: lock_acquire (...../../threads/synch.c:197)
+0xc010a699: simple_thread_func (...hreads/priority-fifo.c:95)
 0xc0100e8b: kernel_thread (..../../threads/thread.c:409)
