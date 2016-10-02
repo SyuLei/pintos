@@ -195,6 +195,12 @@ thread_create (const char *name, int priority,
   sf = alloc_frame (t, sizeof *sf);
   sf->eip = switch_entry;
 
+  /* Init list of holing locks. */
+  list_init(&(t->locks));
+
+  /* target_lock is not defined in thread creating. */
+  t->target_lock = NULL;
+
   /* Add to run queue. */
   thread_unblock (t);
 
@@ -571,13 +577,20 @@ bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_e
   return a->priority > b->priority;
 }
 
-void donate_priority(struct thread *t, int new_priority)
+void donate_priority(struct lock *lock)
 {
-  ASSERT (PRI_MIN <= new_priority && new_priority <= PRI_MAX);
-  if(t->original_priority == -1)
-    t->original_priority = t->priority;
+  struct thread *cur_thread = running_thread();
+  struct thread *holder_thread = lock->holder;
 
-  t->priority = new_priority;
+  ASSERT (PRI_MIN <= cur_thread->priority && cur_thread->priority <= PRI_MAX);
+
+  if(holder_thread->original_priority == -1)
+    holder_thread->original_priority = holder_thread->priority;
+
+  holder_thread->priority = cur_thread->priority;
+
+  if(holder_thread->target_lock != NULL)
+    donate_priority(holder_thread->target_lock);
 }
 
 bool higher_priority_ready(void)
@@ -588,9 +601,6 @@ bool higher_priority_ready(void)
   {
     struct thread *next_thread = list_entry(list_front(&ready_list), struct thread, elem);
 
-    if(next_thread->priority > thread_get_priority())
-      return true;
-    else
-      return false;
+    return next_thread->priority > thread_get_priority();
   }
 }

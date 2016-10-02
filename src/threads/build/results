@@ -8,7 +8,7 @@ pass tests/threads/priority-change
 pass tests/threads/priority-donate-one
 FAIL tests/threads/priority-donate-multiple
 FAIL tests/threads/priority-donate-multiple2
-FAIL tests/threads/priority-donate-nest
+pass tests/threads/priority-donate-nest
 FAIL tests/threads/priority-donate-sema
 FAIL tests/threads/priority-donate-lower
 pass tests/threads/priority-fifo

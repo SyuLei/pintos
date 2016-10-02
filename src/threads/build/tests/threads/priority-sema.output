@@ -1,4 +1,4 @@
-Writing command line to /tmp/mg4tjQpKzF.dsk...
+Writing command line to /tmp/sp3HUhnnGc.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run priority-sema
@@ -31,8 +31,8 @@ Executing 'priority-sema':
 (priority-sema) Back in main thread.
 (priority-sema) end
 Execution of 'priority-sema' complete.
-Timer: 174 ticks
-Thread: 0 idle ticks, 177 kernel ticks, 0 user ticks
+Timer: 175 ticks
+Thread: 0 idle ticks, 178 kernel ticks, 0 user ticks
 Console: 1190 characters output
 Keyboard: 0 keys pressed
 Powering off...

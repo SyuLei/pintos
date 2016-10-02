@@ -203,11 +203,15 @@ lock_acquire (struct lock *lock)
   struct thread *cur_thread = thread_current();
   struct thread *holder_thread = lock->holder;
 
+  cur_thread->target_lock = lock;
+
   if(holder_thread != NULL && holder_thread->priority < cur_thread->priority)
-    donate_priority(holder_thread, cur_thread->priority);
+    donate_priority(lock);
 
   sema_down(&lock->semaphore);
   lock->holder = thread_current();
+
+  cur_thread->target_lock = NULL;
 
 }
 

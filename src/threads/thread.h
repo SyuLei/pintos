@@ -93,6 +93,8 @@ struct thread
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
+    struct list locks;			/* List for holding locks */
+    struct lock *target_lock;		/* Lock which the thread wants, not get yet. */
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
@@ -137,7 +139,7 @@ int thread_get_load_avg (void);
 
 
 bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux);
-void donate_priority(struct thread *t, int new_priority);
+void donate_priority(struct lock *lock);
 bool higher_priority_ready(void);
 
 #endif /* threads/thread.h */
