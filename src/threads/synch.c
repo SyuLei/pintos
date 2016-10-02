@@ -250,7 +250,10 @@ lock_release (struct lock *lock)
   struct thread *t = lock->holder;
 
   if(t->original_priority != -1)
-    t->priority = t->original_priority; 
+  {
+    t->priority = t->original_priority;
+    t->original_priority = -1;
+  }
 
   lock->holder = NULL;
   sema_up (&lock->semaphore);
