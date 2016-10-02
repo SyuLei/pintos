@@ -593,11 +593,12 @@ bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_e
 
 void donate_priority(struct lock *lock)
 {
-  //struct thread *cur_thread = running_thread();
   struct thread *holder_thread = lock->holder;
   struct semaphore *sema = &(lock->semaphore);
 
   ASSERT (PRI_MIN <= holder_thread->priority && holder_thread->priority <= PRI_MAX);
+  ASSERT (sema != NULL);
+  ASSERT (!list_empty(&sema->waiters));
 
   if(holder_thread->original_priority == -1)
     holder_thread->original_priority = holder_thread->priority;

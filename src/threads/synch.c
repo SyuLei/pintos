@@ -265,8 +265,24 @@ lock_release (struct lock *lock)
 
   if(t->original_priority != -1)
   {
-    t->priority = t->original_priority;
-    t->original_priority = -1;
+    if(list_empty(&(t->locks)))
+    {
+      t->priority = t->original_priority;
+      t->original_priority = -1;
+    }
+    else
+    {
+      t->priority = t->original_priority;
+
+      struct lock *target_lock = list_entry(list_front(&(t->locks)), struct lock, elem);
+      struct semaphore *sema = &(target_lock->semaphore);
+      struct thread *target_thread = list_entry(list_front(&(sema->waiters)), struct thread, elem);
+
+      if(target_thread->priority > t->priority)
+        donate_priority(target_lock);
+      else
+        t->original_priority = -1;
+    }
   }
 
   lock->holder = NULL;

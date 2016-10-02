@@ -1,4 +1,4 @@
-Writing command line to /tmp/2HUlZ9KPEf.dsk...
+Writing command line to /tmp/0VMTFQuGsy.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run priority-donate-one
@@ -19,8 +19,8 @@ Executing 'priority-donate-one':
 (priority-donate-one) This should be the last line before finishing this test.
 (priority-donate-one) end
 Execution of 'priority-donate-one' complete.
-Timer: 109 ticks
-Thread: 0 idle ticks, 112 kernel ticks, 0 user ticks
+Timer: 108 ticks
+Thread: 0 idle ticks, 111 kernel ticks, 0 user ticks
 Console: 899 characters output
 Keyboard: 0 keys pressed
 Powering off...
