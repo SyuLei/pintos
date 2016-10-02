@@ -182,6 +182,7 @@ lock_init (struct lock *lock)
   ASSERT (lock != NULL);
 
   lock->holder = NULL;
+  lock->priority = -1;
   sema_init (&lock->semaphore, 1);
 }
 
@@ -213,6 +214,8 @@ lock_acquire (struct lock *lock)
 
   cur_thread->target_lock = NULL;
 
+  //list_push_back(&(cur_thread->locks), &(lock->elem));
+  list_insert_ordered(&(cur_thread->locks), &(lock->elem), (list_less_func *)&higher_priority_lock, NULL);
 }
 
 /* Tries to acquires LOCK and returns true if successful or false
@@ -248,6 +251,8 @@ lock_release (struct lock *lock)
   ASSERT (lock_held_by_current_thread (lock));
 
   struct thread *t = lock->holder;
+
+  list_remove(&(lock->elem));
 
   if(t->original_priority != -1)
   {
@@ -364,10 +369,28 @@ cond_broadcast (struct condition *cond, struct lock *lock)
     cond_signal (cond, lock);
 }
 
-bool higher_priority_sema(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux)
+bool higher_priority_sema(const struct list_elem *elem_a, const struct list_elem *elem_b, void *aux UNUSED)
 {
-  const struct semaphore_elem *sema_a = list_entry(a_elem, struct semaphore_elem, elem);
-  const struct semaphore_elem *sema_b = list_entry(b_elem, struct semaphore_elem, elem);
+  const struct semaphore_elem *sema_a = list_entry(elem_a, struct semaphore_elem, elem);
+  const struct semaphore_elem *sema_b = list_entry(elem_b, struct semaphore_elem, elem);
 
   return sema_a->priority > sema_b->priority;
 }
+
+bool higher_priority_lock(const struct list_elem *elem_a, const struct list_elem *elem_b, void *aux UNUSED)
+{
+  const struct semaphore *sema_a = &(list_entry(elem_a, struct lock, elem)->semaphore);
+  const struct semaphore *sema_b = &(list_entry(elem_b, struct lock, elem)->semaphore);
+
+  if(list_empty(&(sema_a->waiters)))
+    return false;
+
+  if(list_empty(&(sema_b->waiters)))
+    return true;
+
+  const struct thread *thread_a = list_entry(list_front(&(sema_a->waiters)), struct thread, elem);
+  const struct thread *thread_b = list_entry(list_front(&(sema_b->waiters)), struct thread, elem);
+
+  return thread_a->priority > thread_b->priority;
+}
+

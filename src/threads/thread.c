@@ -195,12 +195,6 @@ thread_create (const char *name, int priority,
   sf = alloc_frame (t, sizeof *sf);
   sf->eip = switch_entry;
 
-  /* Init list of holing locks. */
-  list_init(&(t->locks));
-
-  /* target_lock is not defined in thread creating. */
-  t->target_lock = NULL;
-
   /* Add to run queue. */
   thread_unblock (t);
 
@@ -322,7 +316,31 @@ thread_yield (void)
 void
 thread_set_priority (int new_priority) 
 {
-  thread_current ()->priority = new_priority;
+  struct thread *cur_thread = thread_current();
+  cur_thread->priority = new_priority;
+
+  /* 1. thread_current->locks front
+   * 2. get priority of the front one
+   * 3. compare with current_thread's priority
+   * 4. if needed, donate.
+   * */
+
+  if(!list_empty(&(cur_thread->locks)))
+  {
+    struct lock *lock = list_entry(list_front(&(cur_thread->locks)), struct lock, elem);
+    struct semaphore *sema = &(lock->semaphore);
+
+    if(!list_empty(&(sema->waiters)))
+    {
+      struct thread *h_thread = list_entry(list_front(&(sema->waiters)), struct thread, elem);
+
+      if(h_thread->priority > new_priority)
+      {
+	//printf("high : %d, current : %d\n", h_thread->priority, cur_thread->priority);
+        donate_priority(lock);
+      }
+    }
+  }
 
   if(higher_priority_ready())
     thread_yield();
@@ -449,9 +467,13 @@ init_thread (struct thread *t, const char *name, int priority)
   t->status = THREAD_BLOCKED;
   strlcpy (t->name, name, sizeof t->name);
   t->stack = (uint8_t *) t + PGSIZE;
+
+  list_init(&(t->locks));
+
   t->priority = priority;
   t->original_priority = -1;
   t->magic = THREAD_MAGIC;
+  t->target_lock = NULL;
 }
 
 /* Allocates a SIZE-byte frame at the top of thread T's stack and
@@ -569,7 +591,7 @@ allocate_tid (void)
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
 
 /* function for compare threads' priority */
-bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux)
+bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux UNUSED)
 {
   const struct thread *a = list_entry(a_elem, struct thread, elem);
   const struct thread *b = list_entry(b_elem, struct thread, elem);
@@ -581,13 +603,22 @@ void donate_priority(struct lock *lock)
 {
   struct thread *cur_thread = running_thread();
   struct thread *holder_thread = lock->holder;
+  struct semaphore *sema = &(lock->semaphore);
 
   ASSERT (PRI_MIN <= cur_thread->priority && cur_thread->priority <= PRI_MAX);
 
+  //printf("cur : %d, holder : %d\n", cur_thread->priority, holder_thread->priority);
+
   if(holder_thread->original_priority == -1)
     holder_thread->original_priority = holder_thread->priority;
-
-  holder_thread->priority = cur_thread->priority;
+  
+  if(cur_thread != holder_thread)
+    holder_thread->priority = cur_thread->priority;
+  else
+  {
+    struct thread *donor_thread = list_entry(list_front(&(sema->waiters)), struct thread, elem);
+    holder_thread->priority = donor_thread->priority;
+  }
 
   if(holder_thread->target_lock != NULL)
     donate_priority(holder_thread->target_lock);

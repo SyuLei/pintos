@@ -1,4 +1,4 @@
-Writing command line to /tmp/v8TPpYh5nL.dsk...
+Writing command line to /tmp/l49GE3rZdm.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run priority-preempt
@@ -18,7 +18,7 @@ Executing 'priority-preempt':
 (priority-preempt) The high-priority thread should have already completed.
 (priority-preempt) end
 Execution of 'priority-preempt' complete.
-Timer: 87 ticks
+Timer: 88 ticks
 Thread: 0 idle ticks, 90 kernel ticks, 0 user ticks
 Console: 774 characters output
 Keyboard: 0 keys pressed

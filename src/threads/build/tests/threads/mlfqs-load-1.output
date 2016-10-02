@@ -1,4 +1,4 @@
-Writing command line to /tmp/8RGjlEBvaL.dsk...
+Writing command line to /tmp/OpB1evApus.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -mlfqs run mlfqs-load-1
@@ -12,7 +12,7 @@ Executing 'mlfqs-load-1':
 (mlfqs-load-1) spinning for up to 45 seconds, please wait...
 (mlfqs-load-1) FAIL: load average stayed below 0.5 for more than 45 seconds
 Kernel PANIC at ../../tests/threads/tests.c:93 in fail(): test failed
-Call stack: 0xc010727c 0xc010918b 0xc010afb2 0xc01091cb 0xc01000a7 0xc010064f.
+Call stack: 0xc010739c 0xc01092ab 0xc010b0d2 0xc01092eb 0xc01000a7 0xc010064f.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
