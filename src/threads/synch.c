@@ -182,7 +182,6 @@ lock_init (struct lock *lock)
   ASSERT (lock != NULL);
 
   lock->holder = NULL;
-  lock->priority = -1;
   sema_init (&lock->semaphore, 1);
 }
 
@@ -197,25 +196,35 @@ lock_init (struct lock *lock)
 void
 lock_acquire (struct lock *lock)
 {
+
   ASSERT (lock != NULL);
   ASSERT (!intr_context ());
   ASSERT (!lock_held_by_current_thread (lock));
+
+  enum intr_level old_level = intr_disable();
 
   struct thread *cur_thread = thread_current();
   struct thread *holder_thread = lock->holder;
 
   cur_thread->target_lock = lock;
 
-  if(holder_thread != NULL && holder_thread->priority < cur_thread->priority)
+  if(holder_thread != NULL && cur_thread->priority > holder_thread->priority)
+  {
+    list_insert_ordered(&((lock->semaphore).waiters), &thread_current()->elem, (list_less_func *)&higher_priority, NULL);
+
     donate_priority(lock);
 
+    list_remove(&(thread_current()->elem));
+  }
+
   sema_down(&lock->semaphore);
-  lock->holder = thread_current();
+  lock->holder = cur_thread;
 
   cur_thread->target_lock = NULL;
 
-  //list_push_back(&(cur_thread->locks), &(lock->elem));
   list_insert_ordered(&(cur_thread->locks), &(lock->elem), (list_less_func *)&higher_priority_lock, NULL);
+
+  intr_set_level(old_level);
 }
 
 /* Tries to acquires LOCK and returns true if successful or false
