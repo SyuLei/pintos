@@ -46,7 +46,7 @@ static void
 acquire1_thread_func (void *lock_) 
 {
   struct lock *lock = lock_;
-  msg ("where are you?");
+
   lock_acquire (lock);
   msg ("acquire1: got the lock");
   lock_release (lock);
