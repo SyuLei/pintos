@@ -8,7 +8,7 @@
 
 >> Fill in the names and email addresses of your group members.
 
-Ganghoi Choi <ganghoi@kaist.ac.kr>
+Kanghoi Choi <ganghoi@kaist.ac.kr>
 JaeHoon Moon <evansjubeat@kaist.ac.kr>
 
 ---- PRELIMINARIES ----
@@ -23,7 +23,7 @@ Our group uses one token for this project.
 >> text, lecture notes, and course staff.
 
 http://kcats.tistory.com/12
-http://maplejune.tistory.com/entry/Pintos-프로젝트-1-Priority-Scheduling
+http://maplejune.tistory.com
 
 			     ALARM CLOCK
 			     ===========
