@@ -34,26 +34,70 @@ http://maplejune.tistory.com
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
 
+#in thread.h
+struct thread
+  int64_t end;			/* wakeup time(ticks) of blocked thread. */
+
+#in timer.c
+  struct list blocked_list;	/* list of blocked(sleeping) threads. */
+  static bool wakeup_early();	/* function which compares wakeup time. */
+
+
+
 ---- ALGORITHMS ----
 
 >> A2: Briefly describe what happens in a call to timer_sleep(),
 >> including the effects of the timer interrupt handler.
 
+when "timer_sleep()" is called, we get current tick by using "timer_ticks()".
+then wakeup time should be start_tick + ticks
+so I wrote "t->end = start + ticks;"
+after that insert list_elem of current thread to "blocked_list."
+Then block the thread.
+
+Never check the thread until "timer_interrupt()" is called.
+When "timer_interrupt()" is called
+check all threads in "blocked_list",
+whether current tick is larger than threads' wakeup time.
+If wakeup time is over, remove threads' elem from "blocked_list"
+and unblock the threads.
+
+
 >> A3: What steps are taken to minimize the amount of time spent in
 >> the timer interrupt handler?
+
+As I talked, I push thread into "blocked_list" in "timer_sleep()".
+I push threads and sort them immediately by using "list_insert_ordered()"
+
+And then, in "timer_interrupt()" I check threads' wakeup time from front of list
+using "list_front()".
+
+If I meet a thread which doesn't reach wakeup time, I stop the while loop.
+Because "blocked_list" is sorted, I do not have to see next threads.
 
 ---- SYNCHRONIZATION ----
 
 >> A4: How are race conditions avoided when multiple threads call
 >> timer_sleep() simultaneously?
 
+I disable interrupt by using "intr_disable()".
+So other threads cannot call simultaneously.
+
 >> A5: How are race conditions avoided when a timer interrupt occurs
 >> during a call to timer_sleep()?
+
+Same with A4.
+I used interrupt disabling
+so "timer_interrupt()" cannot be called during call to "timer_sleep()"
 
 ---- RATIONALE ----
 
 >> A6: Why did you choose this design?  In what ways is it superior to
 >> another design you considered?
+
+In first think, I thoght "blocked_list" should be in thread.c.
+However, "blocked_list" is only used in timer.c.
+So I changed it's location.
 
 			 PRIORITY SCHEDULING
 			 ===================
@@ -64,6 +108,24 @@ http://maplejune.tistory.com
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
 
+#in thread.h
+struct thread
+  int original_priority;	/* original priority */
+  struct list locks;		/* list of lock which thread has */
+  struct lock *target_lock;	/* lock which thread wants(not get yet) */
+bool higher_priority();		/* compare threads' priority */
+void donate_priority();		/* donate priority */
+bool higher_priority_ready();	/* check whether higher priority in ready list */
+
+#in synch.h
+struct lock
+  struct list_elem elem;	/* list_elem to make list of locks */
+bool higher_priority_sema	/* compare sema's priority */
+bool higher_priority_lock	/* compare lock's priority */
+
+#in synch.c
+struct semaphore_elem
+  int priority			/* priority of semaphore */
 
 
 >> B2: Explain the data structure used to track priority donation.
@@ -93,7 +155,17 @@ If the donation is found to be nested, recursively call the donate_priority() fu
 >> B5: Describe the sequence of events when lock_release() is called
 >> on a lock that a higher-priority thread is waiting for.
 
-The Lock
+First, remove lock from list "locks"
+
+Second, if original_priority is not -1,
+which means priority of this thread is donated,
+rollback the thread's priority.
+At here, if locks, which the thread is holding, have waiting threads
+get the highest priority of wating threads, and donate the priority.
+
+Third, disable lock->holder ("lock->holder = NULL;")
+
+Fourth, sema_up();
 
 
 ---- SYNCHRONIZATION ----
@@ -102,10 +174,18 @@ The Lock
 >> how your implementation avoids it.  Can you use a lock to avoid
 >> this race?
 
+When we doante priority, if many threads try to donate, priority can be editted
+even though we don't want.
+So we get only the highest priority.
+
 ---- RATIONALE ----
 
 >> B7: Why did you choose this design?  In what ways is it superior to
 >> another design you considered?
+
+We choose this desing to control priority donation.
+We considered every possible priority donation.
+
 
 
 
@@ -126,11 +206,19 @@ Clue was not enough, making us take lots of times
 >> Did you find that working on a particular part of the assignment gave
 >> you greater insight into some aspect of OS design?
 
+I found that how synchronize is important.
+
 >> Is there some particular fact or hint we should give students in
 >> future quarters to help them solve the problems?  Conversely, did you
 >> find any of our guidance to be misleading?
 
+I think 'how to see test file' is very important.
+I didn't know what do functions in lower part of test files do.
+
 >> Do you have any suggestions for the TAs to more effectively assist
 >> students, either for future quarters or the remaining projects?
+
+Teach that 'what is happend after creating thread'
+Answer is 'call function which is parameter of create_thread()'
 
 >> Any other comments?
