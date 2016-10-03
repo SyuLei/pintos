@@ -22,5 +22,4 @@ Differences in `diff -u' format:
   (mlfqs-block) Main thread releasing lock.
 - (mlfqs-block) ...got it.
   (mlfqs-block) Block thread should have already acquired lock.
-+ (mlfqs-block) ...got it.
   (mlfqs-block) end

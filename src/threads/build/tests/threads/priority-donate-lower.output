@@ -1,4 +1,4 @@
-Writing command line to /tmp/rHj6MvP2lU.dsk...
+Writing command line to /tmp/NpP2ZFByVq.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run priority-donate-lower
@@ -15,11 +15,11 @@ Executing 'priority-donate-lower':
 (priority-donate-lower) acquire: got the lock
 (priority-donate-lower) acquire: done
 (priority-donate-lower) acquire must already have finished.
-(priority-donate-lower) Main thread should have priority 21.  Actual priority: 31.
+(priority-donate-lower) Main thread should have priority 21.  Actual priority: 21.
 (priority-donate-lower) end
 Execution of 'priority-donate-lower' complete.
-Timer: 101 ticks
-Thread: 0 idle ticks, 104 kernel ticks, 0 user ticks
+Timer: 100 ticks
+Thread: 0 idle ticks, 103 kernel ticks, 0 user ticks
 Console: 863 characters output
 Keyboard: 0 keys pressed
 Powering off...

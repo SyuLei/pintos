@@ -318,7 +318,11 @@ void
 thread_set_priority (int new_priority) 
 {
   struct thread *cur_thread = thread_current();
-  cur_thread->priority = new_priority;
+
+  if(cur_thread->original_priority == -1)
+    cur_thread->priority = new_priority;
+  else
+    cur_thread->original_priority = new_priority;
 
   if(!list_empty(&(cur_thread->locks)))
   {
@@ -604,7 +608,7 @@ void donate_priority(struct lock *lock)
     holder_thread->original_priority = holder_thread->priority;
 
   struct thread *donor_thread = list_entry(list_front(&(sema->waiters)), struct thread, elem);
-   
+
   holder_thread->priority = donor_thread->priority;
 
 
@@ -615,11 +619,18 @@ void donate_priority(struct lock *lock)
 
 bool higher_priority_ready(void)
 {
+  enum intr_level old_level = intr_disable();
+
   if(list_empty(&ready_list))
+  {
+    intr_set_level(old_level);
     return false;
+  }
   else
   {
     struct thread *next_thread = list_entry(list_front(&ready_list), struct thread, elem);
+
+    intr_set_level(old_level);
 
     return next_thread->priority > thread_get_priority();
   }

@@ -1,4 +1,4 @@
-Writing command line to /tmp/t6POyDweC8.dsk...
+Writing command line to /tmp/oGPJOWYQNX.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q run alarm-zero
@@ -13,7 +13,7 @@ Executing 'alarm-zero':
 (alarm-zero) end
 Execution of 'alarm-zero' complete.
 Timer: 36 ticks
-Thread: 1 idle ticks, 37 kernel ticks, 0 user ticks
+Thread: 1 idle ticks, 38 kernel ticks, 0 user ticks
 Console: 381 characters output
 Keyboard: 0 keys pressed
 Powering off...
