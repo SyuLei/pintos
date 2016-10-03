@@ -183,15 +183,11 @@ So we get only the highest priority.
 >> B7: Why did you choose this design?  In what ways is it superior to
 >> another design you considered?
 
-<<<<<<< HEAD
 We choose this desing to control priority donation.
 We considered every possible priority donation.
 
-
-=======
 There was no such other ways we considered. Our method to do this project was
 trying passing each test, with finding out which one should be passed to pass the others.
->>>>>>> 166818d63fd2bf394fc0e3506ee63ecafb4361ee
 
 
 			   SURVEY QUESTIONS
