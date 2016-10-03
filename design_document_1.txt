@@ -8,6 +8,8 @@
 
 >> Fill in the names and email addresses of your group members.
 
+Team name: Team07
+
 Kanghoi Choi <ganghoi@kaist.ac.kr>
 JaeHoon Moon <evansjubeat@kaist.ac.kr>
 
