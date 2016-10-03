@@ -107,6 +107,8 @@ The Lock
 >> B7: Why did you choose this design?  In what ways is it superior to
 >> another design you considered?
 
+There was no such other ways we considered. Our method to do this project was
+trying passing each test, with finding out which one should be passed to pass the others.
 
 
 			   SURVEY QUESTIONS
