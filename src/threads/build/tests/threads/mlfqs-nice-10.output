@@ -1,4 +1,4 @@
-Writing command line to /tmp/eA0ytIdFMm.dsk...
+Writing command line to /tmp/6bGtm2oCmm.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -mlfqs run mlfqs-nice-10
@@ -10,22 +10,22 @@ Boot complete.
 Executing 'mlfqs-nice-10':
 (mlfqs-nice-10) begin
 (mlfqs-nice-10) Starting 10 threads...
-(mlfqs-nice-10) Starting threads took 28 ticks.
+(mlfqs-nice-10) Starting threads took 27 ticks.
 (mlfqs-nice-10) Sleeping 40 seconds to let threads run, please wait...
-(mlfqs-nice-10) Thread 0 received 301 ticks.
+(mlfqs-nice-10) Thread 0 received 300 ticks.
 (mlfqs-nice-10) Thread 1 received 300 ticks.
 (mlfqs-nice-10) Thread 2 received 300 ticks.
 (mlfqs-nice-10) Thread 3 received 300 ticks.
-(mlfqs-nice-10) Thread 4 received 301 ticks.
+(mlfqs-nice-10) Thread 4 received 300 ticks.
 (mlfqs-nice-10) Thread 5 received 300 ticks.
-(mlfqs-nice-10) Thread 6 received 300 ticks.
-(mlfqs-nice-10) Thread 7 received 301 ticks.
+(mlfqs-nice-10) Thread 6 received 301 ticks.
+(mlfqs-nice-10) Thread 7 received 300 ticks.
 (mlfqs-nice-10) Thread 8 received 301 ticks.
 (mlfqs-nice-10) Thread 9 received 300 ticks.
 (mlfqs-nice-10) end
 Execution of 'mlfqs-nice-10' complete.
-Timer: 4137 ticks
-Thread: 991 idle ticks, 3149 kernel ticks, 0 user ticks
+Timer: 4139 ticks
+Thread: 991 idle ticks, 3151 kernel ticks, 0 user ticks
 Console: 999 characters output
 Keyboard: 0 keys pressed
 Powering off...
