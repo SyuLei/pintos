@@ -485,6 +485,7 @@ setup_stack (char *file_name, char *save_ptr, void **esp)
       argv[i] = *esp;
       *esp += strlen(file_name) + 1;
     }
+    /* otherwise, arguments */
     else
     {
       token = strtok_r(NULL, " ", &save_ptr);
@@ -531,7 +532,8 @@ setup_stack (char *file_name, char *save_ptr, void **esp)
 
 
   /* debug */
-  //hex_dump(0xbffffd8 , *esp,(int) ((size_t)PHYS_BASE - (size_t)*esp), true);
+  //i = (int)((size_t)PHYS_BASE - (size_t)*esp);
+  //hex_dump(0xc0000000 - i , *esp, i, true);
 
 
   return success;
@@ -559,7 +561,6 @@ install_page (void *upage, void *kpage, bool writable)
 
 static int get_argc (char *args)
 {
-  //char *dup_args, *token, *save_ptr;
   int argc = 0;
   unsigned int i = 0;
 
