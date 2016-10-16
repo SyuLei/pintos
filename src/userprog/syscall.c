@@ -57,7 +57,7 @@ syscall_init (void)
 static void
 syscall_handler (struct intr_frame *f UNUSED) 
 {
-  if((unsigned)f->esp > 0xc0000000 || (unsigned)f->esp < 0x08048000)
+  if((unsigned)f->esp > (unsigned)PHYS_BASE || (unsigned)f->esp < 0x08048000)
     sys_exit(-1); 
   
   int syscall_number = *(int *)(f->esp);
@@ -124,9 +124,6 @@ static void sys_halt(void)
 
 static void sys_exit(int status)
 {
-  if(status < 0)
-    status = -1;
-
   thread_current()->exit_status = status;
 
   printf("%s: exit(%d)\n", thread_name(), status);
@@ -326,7 +323,7 @@ static void sys_close(int fd)
 
 static bool is_valid_ptr(const void *vaddr)
 {
-  return is_user_vaddr(vaddr) && vaddr >= (void *)0x08048000;
+  return is_user_vaddr(vaddr + 3) && vaddr >= (void *)0x08048000;
 }
 
 
@@ -334,12 +331,18 @@ static bool is_valid_ptr(const void *vaddr)
 static void get_args(struct intr_frame *f, int *args, int num)
 {
   int i;
+  void *vaddr;
 
   for(i = 0;i < num;i++)
   {
+    vaddr = (f->esp + (sizeof(void *) * (i + 1)));
+
+    if(!is_valid_ptr(vaddr))
+      sys_exit(-1);
+    
     //printf("esp[%d] : %08x\n", i, (unsigned)(f->esp + (sizeof(void *) * (i + 1))));
     args[i] = *(int *)(f->esp + (sizeof(void *) * (i + 1)));
-   // printf("args[%d] : %08x\n", i, args[i]);
+    // printf("args[%d] : %08x\n", i, args[i]);
   }
 }
 

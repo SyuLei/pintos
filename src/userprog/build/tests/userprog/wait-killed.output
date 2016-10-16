@@ -1,12 +1,12 @@
-Copying tests/userprog/wait-killed into /tmp/aBuu9WcKmA.dsk...
-Copying tests/userprog/child-bad into /tmp/aBuu9WcKmA.dsk...
-Writing command line to /tmp/tReMK1HbXO.dsk...
-qemu -hda /tmp/tReMK1HbXO.dsk -hdb /tmp/JcnP5TUsh0.dsk -hdc /tmp/aBuu9WcKmA.dsk -m 4 -net none -nographic -monitor null
+Copying tests/userprog/wait-killed into /tmp/zS9TJ1k9SI.dsk...
+Copying tests/userprog/child-bad into /tmp/zS9TJ1k9SI.dsk...
+Writing command line to /tmp/sZWAWfm0G9.dsk...
+qemu -hda /tmp/sZWAWfm0G9.dsk -hdb /tmp/t17eBON8QT.dsk -hdc /tmp/zS9TJ1k9SI.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put wait-killed put child-bad run wait-killed
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
 374 pages available in user pool.
-Calibrating timer...  103,116,800 loops/s.
+Calibrating timer...  130,867,200 loops/s.
 hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 196 sector (98 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -18,18 +18,18 @@ Executing 'wait-killed':
 (wait-killed) begin
 (child-bad) begin
 Page fault at 0x20101234: not present error reading page in kernel context.
-Interrupt 0x0e (#PF Page-Fault Exception) at eip=0xc010acd4
+Interrupt 0x0e (#PF Page-Fault Exception) at eip=0xc010aced
  cr2=20101234 error=00000000
- eax=20101234 ebx=c0120fb0 ecx=000000ad edx=c010acaa
- esi=00000000 edi=c0120fb0 esp=c0293b60 ebp=c0120f74
+ eax=20101234 ebx=c0120fb0 ecx=000000ad edx=c0120fb0
+ esi=00000000 edi=00000000 esp=c0293b60 ebp=c0120f74
  cs=0008 ds=0010 es=0010 ss=0012
 Kernel PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc01076ec 0xc010aad8 0xc010ab80 0xc0101a6d 0xc0101b9f 0xc010acd4 0xc0101a6d 0xc0101b9f 0x80480ad 0x80480f4 0x8048740.
+Call stack: 0xc01076ec 0xc010aad8 0xc010ab80 0xc0101a6d 0xc0101b9f 0xc010aced 0xc0101a6d 0xc0101b9f 0x80480ad 0x80480f4 0x8048740.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 53 ticks
-Thread: 30 idle ticks, 22 kernel ticks, 1 user ticks
+Timer: 55 ticks
+Thread: 30 idle ticks, 24 kernel ticks, 1 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 116 reads, 402 writes
 hd1:0: 196 reads, 0 writes

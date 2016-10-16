@@ -1,11 +1,11 @@
-Copying tests/filesys/base/sm-random into /tmp/ybLZuN4d82.dsk...
-Writing command line to /tmp/thadLRPpPq.dsk...
-qemu -hda /tmp/thadLRPpPq.dsk -hdb /tmp/7AZpiCV91F.dsk -hdc /tmp/ybLZuN4d82.dsk -m 4 -net none -nographic -monitor null
+Copying tests/filesys/base/sm-random into /tmp/tIdOhAUMng.dsk...
+Writing command line to /tmp/zwny2gdYpM.dsk...
+qemu -hda /tmp/zwny2gdYpM.dsk -hdb /tmp/L5Zkvt4RVZ.dsk -hdc /tmp/tIdOhAUMng.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put sm-random run sm-random
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
 374 pages available in user pool.
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  116,940,800 loops/s.
 hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 104 sector (52 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -22,8 +22,8 @@ Executing 'sm-random':
 (sm-random) end
 sm-random: exit(0)
 Execution of 'sm-random' complete.
-Timer: 57 ticks
-Thread: 30 idle ticks, 24 kernel ticks, 3 user ticks
+Timer: 60 ticks
+Thread: 30 idle ticks, 27 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 339 reads, 350 writes
 hd1:0: 104 reads, 0 writes
