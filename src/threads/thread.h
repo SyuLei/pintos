@@ -94,12 +94,16 @@ struct thread
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
+    struct list_elem child_elem;	/* List element for child list */
     struct list locks;			/* List for holding locks */
-    struct list childs;			/* List for child processes */
+    struct list child_list;		/* List for child processes */
     struct list file_list;
     struct lock *target_lock;		/* Lock which the thread wants, not get yet. */
 
     int next_fd;
+    bool load_result;
+    bool wait_status;
+    bool end_status;
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
@@ -148,5 +152,7 @@ struct thread* get_thread(tid_t tid);
 bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux);
 void donate_priority(struct lock *lock);
 bool higher_priority_ready(void);
+
+struct thread* get_child(tid_t tid);
 
 #endif /* threads/thread.h */

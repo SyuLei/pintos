@@ -1,11 +1,11 @@
-Copying tests/userprog/args-many into /tmp/y8OBuRwnQM.dsk...
-Writing command line to /tmp/SFqjWcy5Aq.dsk...
-qemu -hda /tmp/SFqjWcy5Aq.dsk -hdb /tmp/NBTbtDriQG.dsk -hdc /tmp/y8OBuRwnQM.dsk -m 4 -net none -nographic -monitor null
+Copying tests/userprog/args-many into /tmp/pp9ZEAHTRg.dsk...
+Writing command line to /tmp/L0RH8MmU5j.dsk...
+qemu -hda /tmp/L0RH8MmU5j.dsk -hdb /tmp/66HzBHBJcM.dsk -hdc /tmp/pp9ZEAHTRg.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put args-many run 'args-many a b c d e f g h i j k l m n o p q r s t u v'
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
 374 pages available in user pool.
-Calibrating timer...  103,116,800 loops/s.
+Calibrating timer...  104,755,200 loops/s.
 hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 97 sector (48 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -13,14 +13,41 @@ Formatting file system...done.
 Boot complete.
 Putting 'args-many' into the file system...
 Executing 'args-many a b c d e f g h i j k l m n o p q r s t u v':
-exittttttt
-Execution of 'args-many a b c d e f g h i j k l m n o p q r s t u v' complete.
-Timer: 53 ticks
-Thread: 30 idle ticks, 23 kernel ticks, 0 user ticks
+(args) begin
+(args) argc = 23
+(args) argv[0] = 'args-many'
+(args) argv[1] = 'a'
+(args) argv[2] = 'b'
+(args) argv[3] = 'c'
+(args) argv[4] = 'd'
+(args) argv[5] = 'e'
+(args) argv[6] = 'f'
+(args) argv[7] = 'g'
+(args) argv[8] = 'h'
+(args) argv[9] = 'i'
+(args) argv[10] = 'j'
+(args) argv[11] = 'k'
+(args) argv[12] = 'l'
+(args) argv[13] = 'm'
+(args) argv[14] = 'n'
+(args) argv[15] = 'o'
+(args) argv[16] = 'p'
+(args) argv[17] = 'q'
+(args) argv[18] = 'r'
+(args) argv[19] = 's'
+(args) argv[20] = 't'
+(args) argv[21] = 'u'
+(args) argv[22] = 'v'
+(args) argv[23] = null
+(args) end
+args-many: exit(0)
+Execution of 'args-many' complete.
+Timer: 57 ticks
+Thread: 30 idle ticks, 25 kernel ticks, 2 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 30 reads, 202 writes
+hd0:1: 59 reads, 202 writes
 hd1:0: 97 reads, 0 writes
-Console: 888 characters output
+Console: 1420 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

@@ -1,0 +1,26 @@
+Copying tests/filesys/base/syn-read into /tmp/AYIQ859np0.dsk...
+Copying tests/filesys/base/child-syn-read into /tmp/AYIQ859np0.dsk...
+Writing command line to /tmp/kpKiE4Q8OM.dsk...
+qemu -hda /tmp/kpKiE4Q8OM.dsk -hdb /tmp/Rd5lV5WEgJ.dsk -hdc /tmp/AYIQ859np0.dsk -m 4 -net none -nographic -monitor null
+Kernel command line: -q -f put syn-read put child-syn-read run syn-read
+Pintos booting with 4,096 kB RAM...
+374 pages available in kernel pool.
+374 pages available in user pool.
+Calibrating timer...  130,662,400 loops/s.
+hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 215 sector (107 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+Formatting file system...done.
+Boot complete.
+Putting 'syn-read' into the file system...
+Putting 'child-syn-read' into the file system...
+Executing 'syn-read':
+(syn-read) begin
+(syn-read) create "data"
+(syn-read) open "data"
+(syn-read) write "data"
+(syn-read) close "data"
+(syn-read) exec child 1 of 10: "child-syn-read 0"
+child-syn-read: exit(0)
+
+TIMEOUT after 301 seconds of wall-clock time - load average: 0.99, 0.97, 0.79

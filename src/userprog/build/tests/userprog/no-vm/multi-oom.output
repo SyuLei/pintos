@@ -1,0 +1,19 @@
+Copying tests/userprog/no-vm/multi-oom into /tmp/aS3g43htYo.dsk...
+Writing command line to /tmp/kLsThnOBTJ.dsk...
+qemu -hda /tmp/kLsThnOBTJ.dsk -hdb /tmp/5qsxQXbvgz.dsk -hdc /tmp/aS3g43htYo.dsk -m 4 -net none -nographic -monitor null
+Kernel command line: -q -f put multi-oom run multi-oom
+Pintos booting with 4,096 kB RAM...
+374 pages available in kernel pool.
+374 pages available in user pool.
+Calibrating timer...  130,867,200 loops/s.
+hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 114 sector (57 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+Formatting file system...done.
+Boot complete.
+Putting 'multi-oom' into the file system...
+Executing 'multi-oom':
+(multi-oom) begin
+multi-oom: exit(-1)
+
+TIMEOUT after 389 seconds of wall-clock time - load average: 1.00, 0.97, 0.73

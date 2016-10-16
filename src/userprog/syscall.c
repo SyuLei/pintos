@@ -57,6 +57,9 @@ syscall_init (void)
 static void
 syscall_handler (struct intr_frame *f UNUSED) 
 {
+  if((unsigned)f->esp > 0xc0000000 || (unsigned)f->esp < 0x08048000)
+    sys_exit(-1); 
+  
   int syscall_number = *(int *)(f->esp);
   int num_of_args[13] = {0, 1, 1, 1, 2, 1, 1, 1, 3, 3, 2, 1, 1};
   int args[3];
@@ -65,7 +68,7 @@ syscall_handler (struct intr_frame *f UNUSED)
     get_args(f, &args[0], num_of_args[syscall_number]);
 
 
-  //printf ("system call(%d)!\n", syscall_number);
+  //printf ("(system call) sysnum : %d\n", syscall_number);
 
   switch(syscall_number)
   {
@@ -121,11 +124,13 @@ static void sys_halt(void)
 
 static void sys_exit(int status)
 {
-  struct thread *t = thread_current();
+  if(status < 0)
+    status = -1;
 
+  struct thread *t = thread_current();
   struct thread *p_thread = get_thread(t->p_tid);
 
-  if(p_thread != NULL && p_thread->status != THREAD_DYING)
+  if(p_thread != NULL && p_thread->status != THREAD_DYING && t->wait_status)
     p_thread->status = status;
 
   printf("%s: exit(%d)\n", t->name, status);
@@ -135,8 +140,16 @@ static void sys_exit(int status)
 
 static int sys_exec(const char *cmd_line)
 {
-	//I have to do more
   int pid = process_execute(cmd_line);
+
+  if(pid == -1)
+    return -1;
+
+  struct thread *child = get_child(pid);
+
+  ASSERT(child != NULL);
+
+  while(!child->load_result); 
 
   return pid;
 }
@@ -237,7 +250,7 @@ static int sys_read(int fd, void *buffer, unsigned size)
 }
 
 static int sys_write(int fd, const void *buffer, unsigned size)
-{  
+{
    if(fd == STDOUT_FILENO)
   {
     putbuf(buffer, size);
@@ -354,6 +367,7 @@ static int add_file(struct file *f)
   fs->f = f;
   fs->fd = t->next_fd;
   t->next_fd++;
+
   list_push_back(&(t->file_list), &(fs->elem));
 
   return fs->fd;

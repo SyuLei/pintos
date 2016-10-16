@@ -1,10 +1,1 @@
-FAIL
-Test output failed to match any acceptable form.
-
-Acceptable output:
-  (sc-bad-arg) begin
-  sc-bad-arg: exit(-1)
-Differences in `diff -u' format:
-- (sc-bad-arg) begin
-- sc-bad-arg: exit(-1)
-+ exittttttt
+PASS

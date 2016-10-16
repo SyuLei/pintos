@@ -1,0 +1,33 @@
+Copying tests/userprog/bad-read into /tmp/mYtG7odNDi.dsk...
+Writing command line to /tmp/2S5kWUW3Ma.dsk...
+qemu -hda /tmp/2S5kWUW3Ma.dsk -hdb /tmp/ySQjhKfK2L.dsk -hdc /tmp/mYtG7odNDi.dsk -m 4 -net none -nographic -monitor null
+Kernel command line: -q -f put bad-read run bad-read
+Pintos booting with 4,096 kB RAM...
+374 pages available in kernel pool.
+374 pages available in user pool.
+Calibrating timer...  130,867,200 loops/s.
+hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 98 sector (49 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+Formatting file system...done.
+Boot complete.
+Putting 'bad-read' into the file system...
+Executing 'bad-read':
+(bad-read) begin
+Page fault at 0: not present error reading page in user context.
+bad-read: dying due to interrupt 0x0e (#PF Page-Fault Exception).
+Interrupt 0x0e (#PF Page-Fault Exception) at eip=0x80480a6
+ cr2=00000000 error=00000004
+ eax=00000027 ebx=00000000 ecx=000000ad edx=0000000e
+ esi=00000000 edi=00000000 esp=bfffffa0 ebp=bfffffa8
+ cs=001b ds=0023 es=0023 ss=0023
+Execution of 'bad-read' complete.
+Timer: 57 ticks
+Thread: 30 idle ticks, 27 kernel ticks, 0 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 59 reads, 204 writes
+hd1:0: 98 reads, 0 writes
+Console: 1113 characters output
+Keyboard: 0 keys pressed
+Exception: 1 page faults
+Powering off...

@@ -18,6 +18,7 @@
 #include "threads/thread.h"
 #include "threads/vaddr.h"
 #include "threads/malloc.h"
+#include "threads/synch.h"
 
 static thread_func start_process NO_RETURN;
 static bool load (const char *file_name, void (**eip) (void), void **esp);
@@ -30,7 +31,7 @@ static int get_argc (char *args);
 tid_t
 process_execute (const char *file_name) 
 {
-	//printf("process_excute : %s\n", file_name);
+  //printf("(process_excute) file_name : %s\n", file_name);
   char *fn_copy, *save_ptr;
   tid_t tid;
 
@@ -42,9 +43,11 @@ process_execute (const char *file_name)
   strlcpy (fn_copy, file_name, PGSIZE);
 
   /* Create a new thread to execute FILE_NAME. */
-  tid = thread_create (strtok_r(file_name, " ", &save_ptr), PRI_DEFAULT, start_process, fn_copy);
+  tid = thread_create (strtok_r((char *)file_name, " ", &save_ptr), PRI_DEFAULT, start_process, fn_copy);
   if (tid == TID_ERROR)
-    palloc_free_page (fn_copy); 
+    palloc_free_page (fn_copy);
+
+  //printf("(process_excute) tid : %08x\n", tid);
 
   return tid;
 }
@@ -54,10 +57,12 @@ process_execute (const char *file_name)
 static void
 start_process (void *f_name)
 {
-	//printf("start_process : %s\n", (char *)f_name);
+  //printf("(start_process) f_name : %s\n", (char *)f_name);
   char *file_name = f_name;
   struct intr_frame if_;
-  bool success;
+  struct thread *t = thread_current();
+
+  //printf("(process_wait) status : %08x\n", t->status);
 
   /* Initialize interrupt frame and load executable. */
   memset (&if_, 0, sizeof if_);
@@ -66,12 +71,18 @@ start_process (void *f_name)
   if_.eflags = FLAG_IF | FLAG_MBS;
 
 
-  success = load (file_name, &if_.eip, &if_.esp);
+  t->load_result = load (file_name, &if_.eip, &if_.esp);
 
   /* If load failed, quit. */
-  palloc_free_page (file_name);
-  if (!success) 
+  if (!t->load_result)
+  {
+    palloc_free_page (file_name);
     thread_exit ();
+  }
+  //else
+    //printf("(start_process) t->load_result : true\n");
+
+  //printf("(process_wait) status : %08x\n", t->status);
 
   /* Start the user process by simulating a return from an
      interrupt, implemented by intr_exit (in
@@ -95,17 +106,43 @@ start_process (void *f_name)
 int
 process_wait (tid_t child_tid UNUSED) 
 {
-  while(1);
-//   printf("exittttttt\n");
-  return -1;
+  //printf("(process wait) parent : %s, child_tid : %08x\n", thread_current()->name, child_tid);
+  struct thread *t = thread_current();
+  struct thread *child = get_child(child_tid);
+
+  if(child == NULL)
+    return -1;
+
+  //printf("(process_wait) child exists!\n");
+
+  if(child->wait_status)
+    return -1;
+
+  //printf("(process_wait) This thread was not waiting child!\n");
+
+  child->wait_status = true;
+
+  while(!child->end_status)
+	 barrier();
+
+  //printf("(process_wait) child is terminated!\n");
+
+  //if(list_empty(&(t->child_list)))
+    //printf("(process_wait) %s does not have child\n", thread_current()->name);
+  
+  return t->status;
 }
 
 /* Free the current process's resources. */
 void
 process_exit (void)
 {
+
   struct thread *curr = thread_current ();
   uint32_t *pd;
+  //printf("(process_exit) caller : %s, status : %08x\n", curr->name, curr->status);
+
+  list_remove(&(curr->child_elem));
 
   /* Destroy the current process's page directory and switch back
      to the kernel-only page directory. */
@@ -123,6 +160,10 @@ process_exit (void)
       pagedir_activate (NULL);
       pagedir_destroy (pd);
     }
+
+  curr->end_status = true;
+
+  //printf("(process_exit) %s is now end.\n", curr->name);
 }
 
 /* Sets up the CPU for running user code in the current

@@ -1,0 +1,22 @@
+Copying tests/userprog/wait-simple into /tmp/EGrf2W6woH.dsk...
+Copying tests/userprog/child-simple into /tmp/EGrf2W6woH.dsk...
+Writing command line to /tmp/BccXNSgdX1.dsk...
+qemu -hda /tmp/BccXNSgdX1.dsk -hdb /tmp/3KUrb8nbwE.dsk -hdc /tmp/EGrf2W6woH.dsk -m 4 -net none -nographic -monitor null
+Kernel command line: -q -f put wait-simple put child-simple run wait-simple
+Pintos booting with 4,096 kB RAM...
+374 pages available in kernel pool.
+374 pages available in user pool.
+Calibrating timer...  117,350,400 loops/s.
+hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 195 sector (97 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+Formatting file system...done.
+Boot complete.
+Putting 'wait-simple' into the file system...
+Putting 'child-simple' into the file system...
+Executing 'wait-simple':
+(wait-simple) begin
+(child-simple) run
+child-simple: exit(81)
+
+TIMEOUT after 64 seconds of wall-clock time - load average: 1.02, 0.70, 0.49

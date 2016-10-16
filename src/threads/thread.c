@@ -183,6 +183,8 @@ thread_create (const char *name, int priority,
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
 
+  list_push_back(&thread_current()->child_list, &(t->child_elem));
+
   /* Stack frame for kernel_thread(). */
   kf = alloc_frame (t, sizeof *kf);
   kf->eip = NULL;
@@ -471,13 +473,16 @@ init_thread (struct thread *t, const char *name, int priority)
   t->stack = (uint8_t *) t + PGSIZE;
 
   list_init(&(t->locks));
-  list_init(&(t->childs));
+  list_init(&(t->file_list));
+  list_init(&(t->child_list));
 
   t->priority = priority;
   t->original_priority = -1;
   t->magic = THREAD_MAGIC;
   t->target_lock = NULL;
   t->next_fd = 2;
+  t->load_result = false;
+  t->wait_status = false;
 }
 
 /* Allocates a SIZE-byte frame at the top of thread T's stack and
@@ -674,3 +679,27 @@ bool higher_priority_ready(void)
     return next_thread->priority > thread_get_priority();
   }
 }
+
+struct thread* get_child(tid_t tid)
+{
+  struct thread *t = thread_current();
+  struct list_elem *e;
+
+  //printf("(get_child) find child with pid %d\n", tid);
+
+  for(e = list_begin(&(t->child_list));e != list_end(&(t->child_list));e = list_next(e))
+  {
+    struct thread *child = list_entry(e, struct thread, child_elem);
+
+    if(child->tid == tid)
+    {
+      //printf("(get_child) found child\n");
+      return child;
+    }
+  }
+
+  //printf("(get_child) %s : doesn't have child(%d)\n", t->name, tid);
+
+  return NULL;
+}
+
