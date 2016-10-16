@@ -31,7 +31,7 @@ tid_t
 process_execute (const char *file_name) 
 {
 	//printf("process_excute : %s\n", file_name);
-  char *fn_copy;
+  char *fn_copy, *save_ptr;
   tid_t tid;
 
   /* Make a copy of FILE_NAME.
@@ -42,7 +42,7 @@ process_execute (const char *file_name)
   strlcpy (fn_copy, file_name, PGSIZE);
 
   /* Create a new thread to execute FILE_NAME. */
-  tid = thread_create (file_name, PRI_DEFAULT, start_process, fn_copy);
+  tid = thread_create (strtok_r(file_name, " ", &save_ptr), PRI_DEFAULT, start_process, fn_copy);
   if (tid == TID_ERROR)
     palloc_free_page (fn_copy); 
 
@@ -95,7 +95,8 @@ start_process (void *f_name)
 int
 process_wait (tid_t child_tid UNUSED) 
 {
-//  while(1); 
+  while(1);
+//   printf("exittttttt\n");
   return -1;
 }
 
