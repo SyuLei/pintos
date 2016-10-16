@@ -84,6 +84,7 @@ struct thread
   {
     /* Owned by thread.c. */
     tid_t tid;                          /* Thread identifier. */
+    tid_t p_tid;			/* Parent's identifier. */
     enum thread_status status;          /* Thread state. */
     char name[16];                      /* Name (for debugging purposes). */
     uint8_t *stack;                     /* Saved stack pointer. */
@@ -94,7 +95,11 @@ struct thread
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
     struct list locks;			/* List for holding locks */
+    struct list childs;			/* List for child processes */
+    struct list file_list;
     struct lock *target_lock;		/* Lock which the thread wants, not get yet. */
+
+    int next_fd;
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
@@ -138,6 +143,8 @@ int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
 
 
+struct list* get_blocked_list(void);
+struct thread* get_thread(tid_t tid);
 bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux);
 void donate_priority(struct lock *lock);
 bool higher_priority_ready(void);

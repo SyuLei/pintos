@@ -93,7 +93,7 @@ start_process (void *f_name)
 int
 process_wait (tid_t child_tid UNUSED) 
 {
-	while(1);
+  while(1); 
   return -1;
 }
 
@@ -120,8 +120,6 @@ process_exit (void)
       pagedir_activate (NULL);
       pagedir_destroy (pd);
     }
-
-  printf("%s: exit(%d)\n", curr->name, 0);
 }
 
 /* Sets up the CPU for running user code in the current
@@ -230,7 +228,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
     goto done;
   process_activate ();
 
-  token = strtok_r(file_name, " ", &save_ptr);
+  token = strtok_r((char *)file_name, " ", &save_ptr);
 
   /* Open executable file. */
   file = filesys_open (token);

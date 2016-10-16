@@ -27,6 +27,7 @@
 /* List of processes in THREAD_READY state, that is, processes
    that are ready to run but not actually running. */
 static struct list ready_list;
+static struct list blocked_list;
 
 /* Idle thread. */
 static struct thread *idle_thread;
@@ -91,6 +92,7 @@ thread_init (void)
 
   lock_init (&tid_lock);
   list_init (&ready_list);
+  list_init (&blocked_list);
 
   /* Set up a thread structure for the running thread. */
   initial_thread = running_thread ();
@@ -469,11 +471,13 @@ init_thread (struct thread *t, const char *name, int priority)
   t->stack = (uint8_t *) t + PGSIZE;
 
   list_init(&(t->locks));
+  list_init(&(t->childs));
 
   t->priority = priority;
   t->original_priority = -1;
   t->magic = THREAD_MAGIC;
   t->target_lock = NULL;
+  t->next_fd = 2;
 }
 
 /* Allocates a SIZE-byte frame at the top of thread T's stack and
@@ -589,6 +593,37 @@ allocate_tid (void)
 /* Offset of `stack' member within `struct thread'.
    Used by switch.S, which can't figure it out on its own. */
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
+
+
+/* return address of blocked_list */
+struct list* get_blocked_list(void)
+{
+  return &blocked_list;
+}
+
+struct thread* get_thread(tid_t tid)
+{
+  struct list_elem *e;
+
+  for(e = list_begin(&ready_list);e != list_end(&ready_list);e = list_next(e))
+  {
+    struct thread *t = list_entry(e, struct thread, elem);
+
+    if(t->tid == tid)
+      return t;
+  }
+
+  for(e = list_begin(&blocked_list);e != list_end(&blocked_list);e = list_next(e))
+  {
+    struct thread *t = list_entry(e, struct thread, elem);
+
+    if(t->tid == tid)
+      return t;
+  }
+
+  return NULL;
+}
+
 
 /* function for compare threads' priority */
 bool higher_priority(const struct list_elem *a_elem, const struct list_elem *b_elem, void *aux UNUSED)

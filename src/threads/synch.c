@@ -410,8 +410,8 @@ bool higher_priority_sema(const struct list_elem *elem_a, const struct list_elem
 
 bool higher_priority_lock(const struct list_elem *elem_a, const struct list_elem *elem_b, void *aux UNUSED)
 {
-  const struct semaphore *sema_a = &(list_entry(elem_a, struct lock, elem)->semaphore);
-  const struct semaphore *sema_b = &(list_entry(elem_b, struct lock, elem)->semaphore);
+  struct semaphore *sema_a = &(list_entry(elem_a, struct lock, elem)->semaphore);
+  struct semaphore *sema_b = &(list_entry(elem_b, struct lock, elem)->semaphore);
 
   if(list_empty(&(sema_a->waiters)))
     return false;

@@ -1,4 +1,4 @@
-Writing command line to /tmp/9XkPnmgHKX.dsk...
+Writing command line to /tmp/5B1f5aruNf.dsk...
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 Kernel command line: -q -mlfqs run mlfqs-block
@@ -21,5 +21,18 @@ Execution of 'mlfqs-block' complete.
 Timer: 3069 ticks
 Thread: 487 idle ticks, 2585 kernel ticks, 0 user ticks
 Console: 750 characters output
+Interrupt 0x0e (#PF Page-Fault Exception) at eip=0xc01078d2
+ cr2=535657e5 error=00000000
+ eax=535657e5 ebx=535657e5 ecx=c0116000 edx=00000000
+ esi=c0116034 edi=c0111bf8 esp=c0111be8 ebp=c0116ed0
+ cs=0008 ds=0010 es=0010 ss=1265
+Kernel PANIC at ../../threads/interrupt.c:373 in intr_handler(): Unexpected interrupt
+Call stack: 0xc01074dc 0xc0101899 0xc010198f 0xc01078d2 0xc0107c43 0xc0102d21 0xc0109141 0xc01092c3 0xc0106307 0xc0109368 0xc010bcdb 0xc0101071.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 3085 ticks
+Thread: 487 idle ticks, 2598 kernel ticks, 0 user ticks
+Console: 1468 characters output
 Keyboard: 0 keys pressed
 Powering off...

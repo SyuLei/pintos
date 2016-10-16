@@ -24,9 +24,6 @@ static int64_t ticks;
    Initialized by timer_calibrate(). */
 static unsigned loops_per_tick;
 
-/* List of blocked threads */
-static struct list blocked_list;
-
 
 static intr_handler_func timer_interrupt;
 static bool too_many_loops (unsigned loops);
@@ -50,8 +47,6 @@ timer_init (void)
   outb (0x40, count >> 8);
 
   intr_register_ext (0x20, timer_interrupt, "8254 Timer");
-
-  list_init(&blocked_list);
 }
 
 /* Calibrates loops_per_tick, used to implement brief delays. */
@@ -113,7 +108,7 @@ timer_sleep (int64_t ticks)
   struct thread *t = thread_current();
 
   t->end = start + ticks;
-  list_insert_ordered(&blocked_list, &t->elem, (list_less_func *)&wakeup_early, NULL);
+  list_insert_ordered(get_blocked_list(), &t->elem, (list_less_func *)&wakeup_early, NULL);
 
   thread_block();
 
@@ -156,15 +151,15 @@ timer_interrupt (struct intr_frame *args UNUSED)
 
   struct thread *t;
 
-  while(!list_empty(&blocked_list))
+  while(!list_empty(get_blocked_list()))
   {
-    t = list_entry(list_front(&blocked_list), struct thread, elem);
+    t = list_entry(list_front(get_blocked_list()), struct thread, elem);
 
     if(ticks < t->end)
       break;
     else
     {
-      list_pop_front(&blocked_list);
+      list_pop_front(get_blocked_list());
       thread_unblock(t);
     }
   }
@@ -239,7 +234,7 @@ real_time_sleep (int64_t num, int32_t denom)
 }
 
 /* function for compare wakeup time */
-static bool wakeup_early(const struct list_elem *a_elem,const struct list_elem *b_elem, void *aux)
+static bool wakeup_early(const struct list_elem *a_elem,const struct list_elem *b_elem, void *aux UNUSED)
 {
   const struct thread *a = list_entry(a_elem, struct thread, elem);
   const struct thread *b = list_entry(b_elem, struct thread, elem);
