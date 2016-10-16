@@ -110,6 +110,8 @@ struct thread
     struct semaphore load_sema;
     struct semaphore wait_sema;
 
+    struct file *f;
+
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */

@@ -488,6 +488,7 @@ init_thread (struct thread *t, const char *name, int priority)
   t->target_lock = NULL;
   t->next_fd = 2;
   t->load_result = false;
+  t->f = NULL;
 }
 
 /* Allocates a SIZE-byte frame at the top of thread T's stack and

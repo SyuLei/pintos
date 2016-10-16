@@ -144,6 +144,9 @@ process_exit (void)
 
   /* Destroy the current process's page directory and switch back
      to the kernel-only page directory. */
+
+  //file_allow_write(curr->f);
+
   pd = curr->pagedir;
   if (pd != NULL) 
     {
@@ -247,6 +250,11 @@ static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
                           uint32_t read_bytes, uint32_t zero_bytes,
                           bool writable);
 
+
+/* lock for file(from syscall.c) */
+extern struct lock filesys_lock;
+
+
 /* Loads an ELF executable from FILE_NAME into the current thread.
    Stores the executable's entry point into *EIP
    and its initial stack pointer into *ESP.
@@ -270,14 +278,21 @@ load (const char *file_name, void (**eip) (void), void **esp)
 
   token = strtok_r((char *)file_name, " ", &save_ptr);
 
+  lock_acquire(&filesys_lock);
+
   /* Open executable file. */
   file = filesys_open (token);
 
   if (file == NULL) 
     {
+      lock_release(&filesys_lock);
       printf ("load: %s: open failed\n", token);
       goto done; 
     }
+
+  t->f = file;
+  file_deny_write(file);
+  lock_release(&filesys_lock);
 
   /* Read and verify executable header. */
   if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
