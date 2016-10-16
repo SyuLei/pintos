@@ -1,0 +1,25 @@
+Copying tests/userprog/args-single into /tmp/w2ODqcERLU.dsk...
+Writing command line to /tmp/R5ZUndkFCm.dsk...
+qemu -hda /tmp/R5ZUndkFCm.dsk -hdb /tmp/ZnG6fuSU3Z.dsk -hdc /tmp/w2ODqcERLU.dsk -m 4 -net none -nographic -monitor null
+Kernel command line: -q -f put args-single run 'args-single onearg'
+Pintos booting with 4,096 kB RAM...
+374 pages available in kernel pool.
+374 pages available in user pool.
+Calibrating timer...  130,867,200 loops/s.
+hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 97 sector (48 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+Formatting file system...done.
+Boot complete.
+Putting 'args-single' into the file system...
+Executing 'args-single onearg':
+Execution of 'args-single onearg' complete.
+Timer: 54 ticks
+Thread: 30 idle ticks, 24 kernel ticks, 0 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 30 reads, 202 writes
+hd1:0: 97 reads, 0 writes
+Console: 776 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...

@@ -65,7 +65,7 @@ syscall_handler (struct intr_frame *f UNUSED)
     get_args(f, &args[0], num_of_args[syscall_number]);
 
 
-  printf ("system call!\n");
+  //printf ("system call(%d)!\n", syscall_number);
 
   switch(syscall_number)
   {
@@ -97,7 +97,7 @@ syscall_handler (struct intr_frame *f UNUSED)
 	    f->eax = sys_read(args[0], (void *)user_to_kernel_address((const void *)args[1]), (unsigned)args[2]);
 	    break;
     case SYS_WRITE:
-	    f->eax = sys_write(args[0], (const void *)user_to_kernel_address((const void *)args[1]), (unsigned)args[2]);
+	    f->eax = sys_write(args[0], (const void *)args[1], (unsigned)args[2]);
 	    break;
     case SYS_SEEK:
 	    sys_seek(args[0], (unsigned)args[1]);
@@ -237,8 +237,8 @@ static int sys_read(int fd, void *buffer, unsigned size)
 }
 
 static int sys_write(int fd, const void *buffer, unsigned size)
-{
-  if(fd == STDOUT_FILENO)
+{  
+   if(fd == STDOUT_FILENO)
   {
     putbuf(buffer, size);
 
@@ -322,7 +322,11 @@ static void get_args(struct intr_frame *f, int *args, int num)
   int i;
 
   for(i = 0;i < num;i++)
-    args[i] = (int)((int *)(f->esp) + i + 1);
+  {
+    //printf("esp[%d] : %08x\n", i, (unsigned)(f->esp + (sizeof(void *) * (i + 1))));
+    args[i] = *(int *)(f->esp + (sizeof(void *) * (i + 1)));
+   // printf("args[%d] : %08x\n", i, args[i]);
+  }
 }
 
 static int user_to_kernel_address(const void *vaddr)
@@ -330,7 +334,11 @@ static int user_to_kernel_address(const void *vaddr)
   if(!is_valid_ptr(vaddr))
     sys_exit(-1);
 
+  //printf("vaddr : %08x\n", (unsigned)vaddr);
+
   void *ptr = pagedir_get_page(thread_current()->pagedir, vaddr);
+
+  //printf("ptr : %08x\n", (unsigned)ptr);
 
   if(ptr == NULL)
     sys_exit(-1);
