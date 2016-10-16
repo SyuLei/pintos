@@ -1,2 +1,2 @@
 FAIL
-run: TIMEOUT after 301 seconds of wall-clock time - load average: 0.99, 0.97, 0.79
+run: wait for child 1 of 10 returned -1 (expected 0): FAILED

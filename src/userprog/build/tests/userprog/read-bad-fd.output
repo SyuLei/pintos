@@ -1,6 +1,6 @@
-Copying tests/userprog/read-bad-fd into /tmp/fIikiuBBUn.dsk...
-Writing command line to /tmp/5RUyxSh153.dsk...
-qemu -hda /tmp/5RUyxSh153.dsk -hdb /tmp/Unm6IGP3Cl.dsk -hdc /tmp/fIikiuBBUn.dsk -m 4 -net none -nographic -monitor null
+Copying tests/userprog/read-bad-fd into /tmp/lfnyIm1U8x.dsk...
+Writing command line to /tmp/SOTm2DIA7w.dsk...
+qemu -hda /tmp/SOTm2DIA7w.dsk -hdb /tmp/VzPsC8CJ1S.dsk -hdc /tmp/lfnyIm1U8x.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put read-bad-fd run read-bad-fd
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
@@ -17,8 +17,8 @@ Executing 'read-bad-fd':
 (read-bad-fd) end
 read-bad-fd: exit(0)
 Execution of 'read-bad-fd' complete.
-Timer: 57 ticks
-Thread: 30 idle ticks, 27 kernel ticks, 0 user ticks
+Timer: 54 ticks
+Thread: 30 idle ticks, 24 kernel ticks, 0 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 204 writes
 hd1:0: 98 reads, 0 writes

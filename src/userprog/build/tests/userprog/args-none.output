@@ -1,11 +1,11 @@
-Copying tests/userprog/args-none into /tmp/yP5w3a0e0Q.dsk...
-Writing command line to /tmp/UUnEPviug8.dsk...
-qemu -hda /tmp/UUnEPviug8.dsk -hdb /tmp/aLFV2QZFmy.dsk -hdc /tmp/yP5w3a0e0Q.dsk -m 4 -net none -nographic -monitor null
+Copying tests/userprog/args-none into /tmp/SX0XmhYuo7.dsk...
+Writing command line to /tmp/xz33xAZ6p4.dsk...
+qemu -hda /tmp/xz33xAZ6p4.dsk -hdb /tmp/Y0AC20Er3j.dsk -hdc /tmp/SX0XmhYuo7.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put args-none run args-none
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
 374 pages available in user pool.
-Calibrating timer...  124,108,800 loops/s.
+Calibrating timer...  130,048,000 loops/s.
 hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 97 sector (48 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -20,8 +20,8 @@ Executing 'args-none':
 (args) end
 args-none: exit(0)
 Execution of 'args-none' complete.
-Timer: 60 ticks
-Thread: 30 idle ticks, 30 kernel ticks, 0 user ticks
+Timer: 57 ticks
+Thread: 30 idle ticks, 27 kernel ticks, 0 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 202 writes
 hd1:0: 97 reads, 0 writes

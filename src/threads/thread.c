@@ -9,7 +9,6 @@
 #include "threads/intr-stubs.h"
 #include "threads/palloc.h"
 #include "threads/switch.h"
-#include "threads/synch.h"
 #include "threads/vaddr.h"
 #ifdef USERPROG
 #include "userprog/process.h"
@@ -291,6 +290,8 @@ thread_exit (void)
   process_exit ();
 #endif
 
+  sema_up(&(thread_current()->end_sema));
+
   /* Just set our status to dying and schedule another process.
      We will be destroyed during the call to schedule_tail(). */
   intr_disable ();
@@ -475,6 +476,9 @@ init_thread (struct thread *t, const char *name, int priority)
   list_init(&(t->locks));
   list_init(&(t->file_list));
   list_init(&(t->child_list));
+
+  sema_init(&(t->load_sema), 0);
+  sema_init(&(t->end_sema), 0);
 
   t->priority = priority;
   t->original_priority = -1;

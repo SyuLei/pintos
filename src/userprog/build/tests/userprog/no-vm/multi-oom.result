@@ -1,2 +1,12 @@
 FAIL
-run: TIMEOUT after 389 seconds of wall-clock time - load average: 1.00, 0.97, 0.73
+Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0xc01076cc 0xc010aac8 0xc010ab70 0xc0101a4d 0xc0101b7f 0xc01071a4 0xc0109e4a 0xc0101277
+Translation of call stack:
+0xc01076cc: debug_panic (.../../lib/kernel/debug.c:34)
+0xc010aac8: kill (.../userprog/exception.c:105)
+0xc010ab70: page_fault (.../userprog/exception.c:160)
+0xc0101a4d: intr_handler (..../threads/interrupt.c:361)
+0xc0101b7f: intr_entry (threads/intr-stubs.S:38)
+0xc01071a4: memcpy (...ild/../../lib/string.c:16)
+0xc0109e4a: setup_stack (...../userprog/process.c:530)
+0xc0101277: kernel_thread (..../../threads/thread.c:438)

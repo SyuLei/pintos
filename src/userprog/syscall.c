@@ -100,7 +100,7 @@ syscall_handler (struct intr_frame *f UNUSED)
 	    f->eax = sys_read(args[0], (void *)user_to_kernel_address((const void *)args[1]), (unsigned)args[2]);
 	    break;
     case SYS_WRITE:
-	    f->eax = sys_write(args[0], (const void *)args[1], (unsigned)args[2]);
+	    f->eax = sys_write(args[0], (const void *)user_to_kernel_address((const void *)args[1]), (unsigned)args[2]);
 	    break;
     case SYS_SEEK:
 	    sys_seek(args[0], (unsigned)args[1]);
@@ -149,7 +149,8 @@ static int sys_exec(const char *cmd_line)
 
   ASSERT(child != NULL);
 
-  while(!child->load_result); 
+  sema_down(&(child->load_sema));
+  //while(!child->load_result); 
 
   return pid;
 }

@@ -1,2 +1,18 @@
 FAIL
-run: TIMEOUT after 64 seconds of wall-clock time - load average: 1.02, 0.70, 0.49
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (wait-simple) begin
+  (child-simple) run
+  child-simple: exit(81)
+  (wait-simple) wait(exec()) = 81
+  (wait-simple) end
+  wait-simple: exit(0)
+Differences in `diff -u' format:
+  (wait-simple) begin
+  (child-simple) run
+  child-simple: exit(81)
+- (wait-simple) wait(exec()) = 81
++ (wait-simple) wait(exec()) = -1
+  (wait-simple) end
+  wait-simple: exit(0)

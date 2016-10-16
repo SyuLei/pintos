@@ -73,6 +73,8 @@ start_process (void *f_name)
 
   t->load_result = load (file_name, &if_.eip, &if_.esp);
 
+  sema_up(&(t->load_sema));
+
   /* If load failed, quit. */
   if (!t->load_result)
   {
@@ -122,8 +124,9 @@ process_wait (tid_t child_tid UNUSED)
 
   child->wait_status = true;
 
-  while(!child->end_status)
-	 barrier();
+  sema_down(&(child->end_sema));
+  //while(!child->end_status)
+	// barrier();
 
   //printf("(process_wait) child is terminated!\n");
 

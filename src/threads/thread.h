@@ -4,6 +4,7 @@
 #include <debug.h>
 #include <list.h>
 #include <stdint.h>
+#include "threads/synch.h"
 
 /* States in a thread's life cycle. */
 enum thread_status
@@ -102,8 +103,10 @@ struct thread
 
     int next_fd;
     bool load_result;
+    struct semaphore load_sema;
     bool wait_status;
     bool end_status;
+    struct semaphore end_sema;
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */

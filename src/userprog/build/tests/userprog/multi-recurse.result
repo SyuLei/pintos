@@ -1,2 +1,2 @@
 FAIL
-run: TIMEOUT after 65 seconds of wall-clock time - load average: 1.07, 0.84, 0.57
+run: wait(exec("multi-recurse")) returned -1: FAILED
