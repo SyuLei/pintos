@@ -1,11 +1,11 @@
-Copying tests/userprog/close-bad-fd into /tmp/zhcZfY1msT.dsk...
-Writing command line to /tmp/HF8ZCc4uCh.dsk...
-qemu -hda /tmp/HF8ZCc4uCh.dsk -hdb /tmp/asAvIkQxcC.dsk -hdc /tmp/zhcZfY1msT.dsk -m 4 -net none -nographic -monitor null
+Copying tests/userprog/close-bad-fd into /tmp/7cPJA4W3NF.dsk...
+Writing command line to /tmp/4eiCQOMb2m.dsk...
+qemu -hda /tmp/4eiCQOMb2m.dsk -hdb /tmp/Ppl3ec0kQH.dsk -hdc /tmp/7cPJA4W3NF.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put close-bad-fd run close-bad-fd
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
 374 pages available in user pool.
-Calibrating timer...  104,652,800 loops/s.
+Calibrating timer...  104,755,200 loops/s.
 hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 98 sector (49 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -18,7 +18,7 @@ Executing 'close-bad-fd':
 close-bad-fd: exit(0)
 Execution of 'close-bad-fd' complete.
 Timer: 53 ticks
-Thread: 30 idle ticks, 24 kernel ticks, 0 user ticks
+Thread: 30 idle ticks, 23 kernel ticks, 0 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 204 writes
 hd1:0: 98 reads, 0 writes

@@ -17,6 +17,7 @@
 static void syscall_handler (struct intr_frame *);
 
 static bool is_valid_ptr(const void *vaddr);
+static void check_usable_ptr(const void *vaddr);
 static void get_args(struct intr_frame *f, int *args, int num);
 static int user_to_kernel_address(const void *);
 static int add_file(struct file *f);
@@ -57,18 +58,21 @@ syscall_init (void)
 static void
 syscall_handler (struct intr_frame *f UNUSED) 
 {
-  if((unsigned)f->esp > (unsigned)PHYS_BASE || (unsigned)f->esp < 0x08048000)
-    sys_exit(-1); 
-  
+  check_usable_ptr((const void *)f->esp);
+//  if((unsigned)f->esp > (unsigned)PHYS_BASE || (unsigned)f->esp < 0x08048000)  
+//    sys_exit(-1);
+
   int syscall_number = *(int *)(f->esp);
   int num_of_args[13] = {0, 1, 1, 1, 2, 1, 1, 1, 3, 3, 2, 1, 1};
   int args[3];
+
+  //printf ("(system call) sysnum : %d\n", syscall_number);
 
   if(syscall_number != SYS_HALT)
     get_args(f, &args[0], num_of_args[syscall_number]);
 
 
-  //printf ("(system call) sysnum : %d\n", syscall_number);
+
 
   switch(syscall_number)
   {
@@ -321,9 +325,27 @@ static void sys_close(int fd)
   lock_release(&filesys_lock);
 }
 
+
+
 static bool is_valid_ptr(const void *vaddr)
 {
   return is_user_vaddr(vaddr + 3) && vaddr >= (void *)0x08048000;
+}
+
+static void check_usable_ptr(const void *vaddr)
+{
+  if(!is_valid_ptr(vaddr))
+    sys_exit(-1);
+
+  int i;
+
+  for(i = 0;i < 4;i++) 
+  {
+    void *ptr = pagedir_get_page(thread_current()->pagedir, (const void *)((int)vaddr + i));
+
+    if(ptr == NULL)
+      sys_exit(-1);
+  }
 }
 
 
@@ -337,8 +359,9 @@ static void get_args(struct intr_frame *f, int *args, int num)
   {
     vaddr = (f->esp + (sizeof(void *) * (i + 1)));
 
-    if(!is_valid_ptr(vaddr))
-      sys_exit(-1);
+    check_usable_ptr((const void *)vaddr);
+ //   if(!is_valid_ptr(vaddr))
+ //     sys_exit(-1);
     
     //printf("esp[%d] : %08x\n", i, (unsigned)(f->esp + (sizeof(void *) * (i + 1))));
     args[i] = *(int *)(f->esp + (sizeof(void *) * (i + 1)));
@@ -348,8 +371,7 @@ static void get_args(struct intr_frame *f, int *args, int num)
 
 static int user_to_kernel_address(const void *vaddr)
 {
-  if(!is_valid_ptr(vaddr))
-    sys_exit(-1);
+  check_usable_ptr(vaddr);
 
   //printf("vaddr : %08x\n", (unsigned)vaddr);
 
