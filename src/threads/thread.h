@@ -102,11 +102,14 @@ struct thread
     struct lock *target_lock;		/* Lock which the thread wants, not get yet. */
 
     int next_fd;
+    int exit_status;
+
     bool load_result;
-    struct semaphore load_sema;
-    bool wait_status;
-    bool end_status;
+
     struct semaphore end_sema;
+    struct semaphore load_sema;
+    struct semaphore wait_sema;
+
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */

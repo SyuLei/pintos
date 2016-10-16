@@ -1,16 +1,16 @@
 FAIL
 Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc01076cc 0xc010aac8 0xc010ab70 0xc0101a4d 0xc0101b7f 0xc010ace4 0xc0101a4d 0xc0101b7f 0x80480ad 0x80480f4 0x8048740
+Call stack: 0xc01076ec 0xc010aad8 0xc010ab80 0xc0101a6d 0xc0101b9f 0xc010acd4 0xc0101a6d 0xc0101b9f 0x80480ad 0x80480f4 0x8048740
 Translation of call stack:
 In kernel.o:
-0xc01076cc: debug_panic (.../../lib/kernel/debug.c:34)
-0xc010aac8: kill (.../userprog/exception.c:105)
-0xc010ab70: page_fault (.../userprog/exception.c:160)
-0xc0101a4d: intr_handler (..../threads/interrupt.c:361)
-0xc0101b7f: intr_entry (threads/intr-stubs.S:38)
-0xc010ace4: syscall_handler (.../../userprog/syscall.c:63)
-0xc0101a4d: intr_handler (..../threads/interrupt.c:361)
-0xc0101b7f: intr_entry (threads/intr-stubs.S:38)
+0xc01076ec: debug_panic (.../../lib/kernel/debug.c:34)
+0xc010aad8: kill (.../userprog/exception.c:105)
+0xc010ab80: page_fault (.../userprog/exception.c:160)
+0xc0101a6d: intr_handler (..../threads/interrupt.c:361)
+0xc0101b9f: intr_entry (threads/intr-stubs.S:38)
+0xc010acd4: syscall_handler (.../../userprog/syscall.c:63)
+0xc0101a6d: intr_handler (..../threads/interrupt.c:361)
+0xc0101b9f: intr_entry (threads/intr-stubs.S:38)
 In tests/userprog/wait-killed:
 0x080480ad: test_main (...userprog/wait-killed.c:10)
 0x080480f4: main (...ild/../../tests/main.c:11)

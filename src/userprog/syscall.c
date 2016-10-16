@@ -127,13 +127,9 @@ static void sys_exit(int status)
   if(status < 0)
     status = -1;
 
-  struct thread *t = thread_current();
-  struct thread *p_thread = get_thread(t->p_tid);
+  thread_current()->exit_status = status;
 
-  if(p_thread != NULL && p_thread->status != THREAD_DYING && t->wait_status)
-    p_thread->status = status;
-
-  printf("%s: exit(%d)\n", t->name, status);
+  printf("%s: exit(%d)\n", thread_name(), status);
 
   thread_exit();
 }
@@ -149,8 +145,12 @@ static int sys_exec(const char *cmd_line)
 
   ASSERT(child != NULL);
 
+  child->p_tid = thread_tid(); 
+
   sema_down(&(child->load_sema));
-  //while(!child->load_result); 
+
+  if(!child->load_result)
+    return -1;
 
   return pid;
 }

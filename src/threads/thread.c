@@ -290,7 +290,8 @@ thread_exit (void)
   process_exit ();
 #endif
 
-  sema_up(&(thread_current()->end_sema));
+  sema_up(&(thread_current()->wait_sema));
+  sema_down(&(thread_current()->end_sema));
 
   /* Just set our status to dying and schedule another process.
      We will be destroyed during the call to schedule_tail(). */
@@ -479,6 +480,7 @@ init_thread (struct thread *t, const char *name, int priority)
 
   sema_init(&(t->load_sema), 0);
   sema_init(&(t->end_sema), 0);
+  sema_init(&(t->wait_sema), 0);
 
   t->priority = priority;
   t->original_priority = -1;
@@ -486,7 +488,6 @@ init_thread (struct thread *t, const char *name, int priority)
   t->target_lock = NULL;
   t->next_fd = 2;
   t->load_result = false;
-  t->wait_status = false;
 }
 
 /* Allocates a SIZE-byte frame at the top of thread T's stack and

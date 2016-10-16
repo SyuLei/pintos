@@ -81,8 +81,8 @@ start_process (void *f_name)
     palloc_free_page (file_name);
     thread_exit ();
   }
-  //else
-    //printf("(start_process) t->load_result : true\n");
+  
+  // if(t->load_result) printf("(start_process) t->load_result : true\n");
 
   //printf("(process_wait) status : %08x\n", t->status);
 
@@ -117,23 +117,20 @@ process_wait (tid_t child_tid UNUSED)
 
   //printf("(process_wait) child exists!\n");
 
-  if(child->wait_status)
-    return -1;
+  sema_down(&(child->wait_sema));
 
-  //printf("(process_wait) This thread was not waiting child!\n");
+  list_remove(&(child->child_elem));
 
-  child->wait_status = true;
+  t->exit_status = child->exit_status;
 
-  sema_down(&(child->end_sema));
-  //while(!child->end_status)
-	// barrier();
+  sema_up(&(child->end_sema));
 
   //printf("(process_wait) child is terminated!\n");
 
   //if(list_empty(&(t->child_list)))
     //printf("(process_wait) %s does not have child\n", thread_current()->name);
   
-  return t->status;
+  return t->exit_status;
 }
 
 /* Free the current process's resources. */
@@ -144,8 +141,6 @@ process_exit (void)
   struct thread *curr = thread_current ();
   uint32_t *pd;
   //printf("(process_exit) caller : %s, status : %08x\n", curr->name, curr->status);
-
-  list_remove(&(curr->child_elem));
 
   /* Destroy the current process's page directory and switch back
      to the kernel-only page directory. */
@@ -163,8 +158,6 @@ process_exit (void)
       pagedir_activate (NULL);
       pagedir_destroy (pd);
     }
-
-  curr->end_status = true;
 
   //printf("(process_exit) %s is now end.\n", curr->name);
 }
