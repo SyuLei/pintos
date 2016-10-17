@@ -140,6 +140,15 @@ process_exit (void)
 
   struct thread *curr = thread_current ();
   uint32_t *pd;
+  int i;
+
+  for(i = curr->next_fd - 1;i > 1;i--)
+  {
+    struct file *f = get_file(i);
+
+    if(f != NULL)
+      file_close(f);
+  }
   //printf("(process_exit) caller : %s, status : %08x\n", curr->name, curr->status);
 
   /* Destroy the current process's page directory and switch back
@@ -635,4 +644,48 @@ static int get_argc (char *args)
   }
 
   return argc;
+}
+
+int add_file(struct file *f)
+{
+  struct thread *t = thread_current();
+  struct file_struct *fs = malloc(sizeof(struct file_struct));
+
+  fs->f = f;
+  fs->fd = t->next_fd;
+  t->next_fd++;
+
+  list_push_back(&(t->file_list), &(fs->elem));
+
+  return fs->fd;
+}
+
+struct file* get_file(int fd)
+{
+  struct thread *t = thread_current();
+  struct list_elem *e;
+
+  for(e = list_begin(&(t->file_list));e != list_end(&(t->file_list));e = list_next(e))
+  {
+    struct file_struct *fs = list_entry(e, struct file_struct, elem);
+
+    if(fs->fd == fd)
+      return fs->f;
+  }
+
+  return NULL;
+}
+
+void remove_file(int fd)
+{
+  struct thread *t = thread_current();
+  struct list_elem *e;
+
+  for(e = list_begin(&(t->file_list));e != list_end(&(t->file_list));e = list_next(e))
+  {
+    struct file_struct *fs = list_entry(e, struct file_struct, elem);
+
+    if(fs->fd == fd)
+      list_remove(e);
+  }
 }

@@ -5,4 +5,5 @@ threads/thread.o: ../../threads/thread.c ../../threads/thread.h \
   ../../lib/kernel/stdio.h ../../lib/string.h ../../threads/flags.h \
   ../../threads/interrupt.h ../../threads/intr-stubs.h \
   ../../threads/palloc.h ../../threads/switch.h ../../threads/vaddr.h \
-  ../../threads/loader.h ../../userprog/process.h ../../threads/thread.h
+  ../../threads/loader.h ../../userprog/process.h ../../threads/thread.h \
+  ../../threads/malloc.h ../../filesys/file.h ../../filesys/off_t.h

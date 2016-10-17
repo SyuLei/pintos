@@ -1,11 +1,11 @@
-Copying tests/userprog/bad-jump2 into /tmp/pizl8b8I7T.dsk...
-Writing command line to /tmp/BGDEJw4f0A.dsk...
-qemu -hda /tmp/BGDEJw4f0A.dsk -hdb /tmp/A8WxAmCr0q.dsk -hdc /tmp/pizl8b8I7T.dsk -m 4 -net none -nographic -monitor null
+Copying tests/userprog/bad-jump2 into /tmp/mzV5yNEPSI.dsk...
+Writing command line to /tmp/8xLPIFx1RD.dsk...
+qemu -hda /tmp/8xLPIFx1RD.dsk -hdb /tmp/tVpgvM0t46.dsk -hdc /tmp/mzV5yNEPSI.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put bad-jump2 run bad-jump2
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
 374 pages available in user pool.
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  127,590,400 loops/s.
 hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 98 sector (49 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -14,20 +14,14 @@ Boot complete.
 Putting 'bad-jump2' into the file system...
 Executing 'bad-jump2':
 (bad-jump2) begin
-Page fault at 0xc0000000: rights violation error reading page in user context.
-bad-jump2: dying due to interrupt 0x0e (#PF Page-Fault Exception).
-Interrupt 0x0e (#PF Page-Fault Exception) at eip=0xc0000000
- cr2=c0000000 error=00000005
- eax=c0000000 ebx=00000000 ecx=000000ad edx=0000000e
- esi=00000000 edi=00000000 esp=bfffff9c ebp=bfffffa8
- cs=001b ds=0023 es=0023 ss=0023
+bad-jump2: exit(-1)
 Execution of 'bad-jump2' complete.
-Timer: 55 ticks
-Thread: 30 idle ticks, 25 kernel ticks, 0 user ticks
+Timer: 57 ticks
+Thread: 30 idle ticks, 27 kernel ticks, 0 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 204 writes
 hd1:0: 98 reads, 0 writes
-Console: 1135 characters output
+Console: 781 characters output
 Keyboard: 0 keys pressed
 Exception: 1 page faults
 Powering off...

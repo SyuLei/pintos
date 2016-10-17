@@ -2,13 +2,10 @@
 #include <stdio.h>
 #include <syscall-nr.h>
 #include "threads/interrupt.h"
-#include "threads/thread.h"
 #include "threads/synch.h"
 #include "threads/init.h"
 #include "userprog/pagedir.h"
 #include "filesys/filesys.h"
-#include "filesys/file.h"
-#include "threads/malloc.h"
 #include "userprog/process.h"
 #include "devices/input.h"
 #include "threads/vaddr.h"
@@ -20,13 +17,9 @@ static bool is_valid_ptr(const void *vaddr);
 static void check_usable_ptr(const void *vaddr);
 static void get_args(struct intr_frame *f, int *args, int num);
 static int user_to_kernel_address(const void *);
-static int add_file(struct file *f);
-static void remove_file(int fd);
-static struct file* get_file(int fd);
 
 /* implemented in project2 */
 static void sys_halt(void);
-static void sys_exit(int status);
 static int sys_exec(const char *cmd_line);
 static int sys_wait (int pid);
 static bool sys_create(const char *file, unsigned initial_size);
@@ -41,12 +34,6 @@ static void sys_close(int fd);
 
 struct lock filesys_lock;
 
-struct file_struct {
-  struct file *f;
-  int fd;
-  struct list_elem elem;
-};
-
 
 void
 syscall_init (void) 
@@ -59,8 +46,6 @@ static void
 syscall_handler (struct intr_frame *f UNUSED) 
 {
   check_usable_ptr((const void *)f->esp);
-//  if((unsigned)f->esp > (unsigned)PHYS_BASE || (unsigned)f->esp < 0x08048000)  
-//    sys_exit(-1);
 
   int syscall_number = *(int *)(f->esp);
   int num_of_args[13] = {0, 1, 1, 1, 2, 1, 1, 1, 3, 3, 2, 1, 1};
@@ -126,7 +111,7 @@ static void sys_halt(void)
   power_off();
 }
 
-static void sys_exit(int status)
+void sys_exit(int status)
 {
   thread_current()->exit_status = status;
 
@@ -221,6 +206,9 @@ static int sys_filesize(int fd)
 
 static int sys_read(int fd, void *buffer, unsigned size)
 {
+  if(buffer == NULL)
+    sys_exit(-1);
+
   if(fd == STDIN_FILENO)
   {
     unsigned i;
@@ -253,7 +241,10 @@ static int sys_read(int fd, void *buffer, unsigned size)
 
 static int sys_write(int fd, const void *buffer, unsigned size)
 {
-   if(fd == STDOUT_FILENO)
+  if(buffer == NULL)
+    sys_exit(-1);
+  
+  if(fd == STDOUT_FILENO)
   {
     putbuf(buffer, size);
 
@@ -350,7 +341,7 @@ static void check_usable_ptr(const void *vaddr)
 
 
 
-static void get_args(struct intr_frame *f, int *args, int num)
+void get_args(struct intr_frame *f, int *args, int num)
 {
   int i;
   void *vaddr;
@@ -383,48 +374,4 @@ static int user_to_kernel_address(const void *vaddr)
     sys_exit(-1);
 
   return (int)ptr;
-}
-
-static int add_file(struct file *f)
-{
-  struct thread *t = thread_current();
-  struct file_struct *fs = malloc(sizeof(struct file_struct));
-
-  fs->f = f;
-  fs->fd = t->next_fd;
-  t->next_fd++;
-
-  list_push_back(&(t->file_list), &(fs->elem));
-
-  return fs->fd;
-}
-
-static struct file* get_file(int fd)
-{
-  struct thread *t = thread_current();
-  struct list_elem *e;
-
-  for(e = list_begin(&(t->file_list));e != list_end(&(t->file_list));e = list_next(e))
-  {
-    struct file_struct *fs = list_entry(e, struct file_struct, elem);
-
-    if(fs->fd == fd)
-      return fs->f;
-  }
-
-  return NULL;
-}
-
-static void remove_file(int fd)
-{
-  struct thread *t = thread_current();
-  struct list_elem *e;
-
-  for(e = list_begin(&(t->file_list));e != list_end(&(t->file_list));e = list_next(e))
-  {
-    struct file_struct *fs = list_entry(e, struct file_struct, elem);
-
-    if(fs->fd == fd)
-      list_remove(e);
-  }
 }
