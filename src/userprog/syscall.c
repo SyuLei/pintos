@@ -57,8 +57,6 @@ syscall_handler (struct intr_frame *f UNUSED)
     get_args(f, &args[0], num_of_args[syscall_number]);
 
 
-
-
   switch(syscall_number)
   {
     case SYS_HALT:
@@ -113,9 +111,21 @@ static void sys_halt(void)
 
 void sys_exit(int status)
 {
-  thread_current()->exit_status = status;
+  struct thread *t = thread_current();
 
-  printf("%s: exit(%d)\n", thread_name(), status);
+  t->exit_status = status;
+
+  int i;
+
+  for(i = t->next_fd - 1;i > 1;i--)
+  {
+    struct file *f = get_file(i);
+
+    if(f != NULL)
+      file_close(f);
+  }
+
+  printf("%s: exit(%d)\n", t->name, status);
 
   thread_exit();
 }

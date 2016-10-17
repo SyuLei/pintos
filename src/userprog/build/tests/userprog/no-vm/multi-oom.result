@@ -1,12 +1,12 @@
 FAIL
 Kernel panic in run: PANIC at ../../userprog/exception.c:101 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc01076fc 0xc010ac38 0xc010acef 0xc0101a7d 0xc0101baf 0xc01071d4 0xc0109fb8 0xc01012a6
+Call stack: 0xc01076fc 0xc010ac18 0xc010accf 0xc0101a7d 0xc0101baf 0xc01071d4 0xc0109f9a 0xc01012a6
 Translation of call stack:
 0xc01076fc: debug_panic (.../../lib/kernel/debug.c:34)
-0xc010ac38: kill (.../userprog/exception.c:106)
-0xc010acef: page_fault (.../userprog/exception.c:164)
+0xc010ac18: kill (.../userprog/exception.c:106)
+0xc010accf: page_fault (.../userprog/exception.c:164)
 0xc0101a7d: intr_handler (..../threads/interrupt.c:361)
 0xc0101baf: intr_entry (threads/intr-stubs.S:38)
 0xc01071d4: memcpy (...ild/../../lib/string.c:16)
-0xc0109fb8: setup_stack (...../userprog/process.c:547)
+0xc0109f9a: setup_stack (...../userprog/process.c:541)
 0xc01012a6: kernel_thread (..../../threads/thread.c:439)

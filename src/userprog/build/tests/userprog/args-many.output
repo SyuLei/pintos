@@ -1,11 +1,11 @@
-Copying tests/userprog/args-many into /tmp/zYjaL4FIdN.dsk...
-Writing command line to /tmp/5WHqdVWSfR.dsk...
-qemu -hda /tmp/5WHqdVWSfR.dsk -hdb /tmp/7FbwRasnWm.dsk -hdc /tmp/zYjaL4FIdN.dsk -m 4 -net none -nographic -monitor null
+Copying tests/userprog/args-many into /tmp/x5u8lMr3FC.dsk...
+Writing command line to /tmp/s4Aw7xacPh.dsk...
+qemu -hda /tmp/s4Aw7xacPh.dsk -hdb /tmp/2czcTSI3Li.dsk -hdc /tmp/x5u8lMr3FC.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put args-many run 'args-many a b c d e f g h i j k l m n o p q r s t u v'
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
 374 pages available in user pool.
-Calibrating timer...  129,228,800 loops/s.
+Calibrating timer...  103,936,000 loops/s.
 hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 97 sector (48 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -42,8 +42,8 @@ Executing 'args-many a b c d e f g h i j k l m n o p q r s t u v':
 (args) end
 args-many: exit(0)
 Execution of 'args-many' complete.
-Timer: 58 ticks
-Thread: 30 idle ticks, 26 kernel ticks, 2 user ticks
+Timer: 53 ticks
+Thread: 30 idle ticks, 22 kernel ticks, 1 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 202 writes
 hd1:0: 97 reads, 0 writes

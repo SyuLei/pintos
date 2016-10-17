@@ -1,11 +1,11 @@
-Copying tests/userprog/no-vm/multi-oom into /tmp/lx0fXSz468.dsk...
-Writing command line to /tmp/UUXg9q8DML.dsk...
-qemu -hda /tmp/UUXg9q8DML.dsk -hdb /tmp/HuWXQ7Ut4d.dsk -hdc /tmp/lx0fXSz468.dsk -m 4 -net none -nographic -monitor null
+Copying tests/userprog/no-vm/multi-oom into /tmp/kt5W88UeNv.dsk...
+Writing command line to /tmp/8vUAsHIn90.dsk...
+qemu -hda /tmp/8vUAsHIn90.dsk -hdb /tmp/C2R4ugA0Kn.dsk -hdc /tmp/kt5W88UeNv.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put multi-oom run multi-oom
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
 374 pages available in user pool.
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  116,940,800 loops/s.
 hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 114 sector (57 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -143,12 +143,12 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0xc01071d4
  esi=c0284000 edi=c028400a esp=c01115f8 ebp=c0285ea0
  cs=0008 ds=0010 es=0010 ss=f000
 Kernel PANIC at ../../userprog/exception.c:101 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc01076fc 0xc010ac38 0xc010acef 0xc0101a7d 0xc0101baf 0xc01071d4 0xc0109fb8 0xc01012a6.
+Call stack: 0xc01076fc 0xc010ac18 0xc010accf 0xc0101a7d 0xc0101baf 0xc01071d4 0xc0109f9a 0xc01012a6.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 307 ticks
-Thread: 30 idle ticks, 38 kernel ticks, 239 user ticks
+Timer: 327 ticks
+Thread: 30 idle ticks, 31 kernel ticks, 266 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 36148 reads, 236 writes
 hd1:0: 114 reads, 0 writes

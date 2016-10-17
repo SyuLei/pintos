@@ -137,24 +137,17 @@ process_wait (tid_t child_tid UNUSED)
 void
 process_exit (void)
 {
-
   struct thread *curr = thread_current ();
   uint32_t *pd;
-  int i;
 
-  for(i = curr->next_fd - 1;i > 1;i--)
-  {
-    struct file *f = get_file(i);
 
-    if(f != NULL)
-      file_close(f);
-  }
+
+
+
   //printf("(process_exit) caller : %s, status : %08x\n", curr->name, curr->status);
 
   /* Destroy the current process's page directory and switch back
      to the kernel-only page directory. */
-
-  //file_allow_write(curr->f);
 
   pd = curr->pagedir;
   if (pd != NULL) 
@@ -300,7 +293,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
     }
 
   t->f = file;
-  file_deny_write(file);
+
   lock_release(&filesys_lock);
 
   /* Read and verify executable header. */
@@ -341,6 +334,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
         case PT_DYNAMIC:
         case PT_INTERP:
         case PT_SHLIB:
+	  file_allow_write(file);
           goto done;
         case PT_LOAD:
           if (validate_segment (&phdr, file)) 
@@ -367,7 +361,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
                 }
               if (!load_segment (file, file_page, (void *) mem_page,
                                  read_bytes, zero_bytes, writable))
-                goto done;
+		      goto done;
             }
           else
             goto done;
@@ -686,6 +680,9 @@ void remove_file(int fd)
     struct file_struct *fs = list_entry(e, struct file_struct, elem);
 
     if(fs->fd == fd)
+    {
       list_remove(e);
+      file_close(fs->f);
+    }
   }
 }
