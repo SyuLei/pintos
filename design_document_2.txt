@@ -1,0 +1,203 @@
+			+--------------------------+
+			|          CS 330          |
+			| PROJECT 2: USER PROGRAMS |
+			|      DESIGN DOCUMENT     |
+			+--------------------------+
+
+---- GROUP ----
+
+>> Fill in the names and email addresses of your group members.
+
+Kanghoi Choi <ganghoi@kaist.ac.kr>
+JaeHoon Moon <evansjubeat@kaist.ac.kr
+
+
+---- PRELIMINARIES ----
+
+>> If you have any preliminary comments on your submission, notes for the
+>> TAs, or extra credit, please give them here.
+
+Our team will use one token for this project.
+
+
+>> Please cite any offline or online sources you consulted while
+>> preparing your submission, other than the Pintos documentation, course
+>> text, lecture notes, and course staff.
+
+
+http://bogus919.tistory.com/
+
+
+
+
+			   ARGUMENT PASSING
+			   ================
+
+---- DATA STRUCTURES ----
+
+>> A1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+char *token;		/* result of slicing */
+char *save_ptr;		/* remember position of slicing */
+both are used for strtok_r()
+
+---- ALGORITHMS ----
+
+>> A2: Briefly describe how you implemented argument parsing.  How do
+>> you arrange for the elements of argv[] to be in the right order?
+>> How do you avoid overflowing the stack page?
+using strtok_r to parsing given cmdline.
+Lower esp for length of cmdline, and push from argv[0] to argv[n]
+then push word_align, push NULL, address of argv[n] ~ argv[0]
+push address of address of argv[0](which is char ** type)
+finally push return address.
+
+to avoid overflowing, we push cmdline at esp - len(cmdline)
+if esp < PHYS_BASE, it cannot be overflow 
+
+---- RATIONALE ----
+
+>> A3: Why does Pintos implement strtok_r() but not strtok()?
+
+strtok() use static buffer, which is not thread-safe. 
+
+>> A4: In Pintos, the kernel separates commands into a executable name
+>> and arguments.  In Unix-like systems, the shell does this
+>> separation.  Identify at least two advantages of the Unix approach.
+1. executable name is used pretty much. So it is convinient.
+2. in system call, filename is not used but arguments are used.
+
+			     SYSTEM CALLS
+			     ============
+
+---- DATA STRUCTURES ----
+
+>> B1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+# in thread.h
+struct thread
+  int next_fd;				/* int for next fd */
+  int exit_status;			/* exit status */
+  bool load_result;			/* true if load success */
+  struct list_elem child_elem;		/* list_elem for child_list */
+  struct list child_list;		/* list for child process(thread) */
+  struct list file_list;		/* list for file */
+  struct semaphore end_sema;		/* child wait sema before exit */
+  struct semaphore load_sema;		/* check for child load */
+  struct semaphore wait_sema;		/* check for child exit */ 
+  struct file *f;			/* running file by thread */
+
+#in process.h
+struct file_struct			/* struct for manage file */
+  struct file *f;			/* file pointer */
+  int fd;				/* file descriptor */
+  struct list_elem elem;		/* elem for file_list */
+
+#in syscall.c
+struct lock filesys_lock;		/* lock for accessing file */
+
+
+>> B2: Describe how file descriptors are associated with open files.
+>> Are file descriptors unique within the entire OS or just within a
+>> single process?
+fd is unique for only process. it is hard to remember file struct
+however, with fd, we can manage easily.
+
+---- ALGORITHMS ----
+
+>> B3: Describe your code for reading and writing user data from the
+>> kernel.
+1. find file which have argv[0] as fd
+2. take care of special case(STDIN & STDOUT FILENO)
+3. read/write from/to buffer
+4. return read/write size
+
+>> B4: Suppose a system call causes a full page (4,096 bytes) of data
+>> to be copied from user space into the kernel.  What is the least
+>> and the greatest possible number of inspections of the page table
+>> (e.g. calls to pagedir_get_page()) that might result?  What about
+>> for a system call that only copies 2 bytes of data?  Is there room
+>> for improvement in these numbers, and how much?
+
+>> B5: Briefly describe your implementation of the "wait" system call
+>> and how it interacts with process termination.
+1. call process_wait(pid)
+2. wait until child becomes zombie state(just before terminating)
+3. get exit_status from child
+4. allow child terminating
+5. return exit_status
+
+>> B6: Any access to user program memory at a user-specified address
+>> can fail due to a bad pointer value.  Such accesses must cause the
+>> process to be terminated.  System calls are fraught with such
+>> accesses, e.g. a "write" system call requires reading the system
+>> call number from the user stack, then each of the call's three
+>> arguments, then an arbitrary amount of user memory, and any of
+>> these can fail at any point.  This poses a design and
+>> error-handling problem: how do you best avoid obscuring the primary
+>> function of code in a morass of error-handling?  Furthermore, when
+>> an error is detected, how do you ensure that all temporarily
+>> allocated resources (locks, buffers, etc.) are freed?  In a few
+>> paragraphs, describe the strategy or strategies you adopted for
+>> managing these issues.  Give an example.
+1. check esp is in proper region(from 0x08048000 to PHYS_BASE)
+and check arguments also.
+2. if unmapped memory, call exit(-1)
+
+---- SYNCHRONIZATION ----
+
+>> B7: The "exec" system call returns -1 if loading the new executable
+>> fails, so it cannot return before the new executable has completed
+>> loading.  How does your code ensure this?  How is the load
+>> success/failure status passed back to the thread that calls "exec"?
+use semaphore
+So Parent waits until child loads perfectly
+It load fail, it will get -1 return value
+
+>> B8: Consider parent process P with child process C.  How do you
+>> ensure proper synchronization and avoid race conditions when P
+>> calls wait(C) before C exits?  After C exits?  How do you ensure
+>> that all resources are freed in each case?  How about when P
+>> terminates without waiting, before C exits?  After C exits?  Are
+>> there any special cases?
+C becomes zombie state, which is ready to exits
+but wait until parent is calls wait(c)
+So P always get return value
+
+---- RATIONALE ----
+
+>> B9: Why did you choose to implement access to user memory from the
+>> kernel in the way that you did?
+
+>> B10: What advantages or disadvantages can you see to your design
+>> for file descriptors?
+even file is closed, fd of closed file cannot be used again.
+
+>> B11: The default tid_t to pid_t mapping is the identity mapping.
+>> If you changed it, what advantages are there to your approach?
+
+			   SURVEY QUESTIONS
+			   ================
+
+Answering these questions is optional, but it will help us improve the
+course in future quarters.  Feel free to tell us anything you
+want--these questions are just to spur your thoughts.  You may also
+choose to respond anonymously in the course evaluations at the end of
+the quarter.
+
+>> In your opinion, was this assignment, or any one of the three problems
+>> in it, too easy or too hard?  Did it take too long or too little time?
+
+>> Did you find that working on a particular part of the assignment gave
+>> you greater insight into some aspect of OS design?
+
+>> Is there some particular fact or hint we should give students in
+>> future quarters to help them solve the problems?  Conversely, did you
+>> find any of our guidance to be misleading?
+
+>> Do you have any suggestions for the TAs to more effectively assist
+>> students, either for future quarters or the remaining projects?
+
+>> Any other comments?
