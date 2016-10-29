@@ -85,26 +85,29 @@ struct thread
   {
     /* Owned by thread.c. */
     tid_t tid;                          /* Thread identifier. */
-    tid_t p_tid;			/* Parent's identifier. */
     enum thread_status status;          /* Thread state. */
     char name[16];                      /* Name (for debugging purposes). */
     uint8_t *stack;                     /* Saved stack pointer. */
     int priority;                       /* Priority. */
-    int original_priority;		/* list for old priority */
+    int original_priority;		/* old priority */
     int64_t end;			/* end time of sleep */
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
-    struct list_elem child_elem;	/* List element for child list */
     struct list locks;			/* List for holding locks */
-    struct list child_list;		/* List for child processes */
-    struct list file_list;
     struct lock *target_lock;		/* Lock which the thread wants, not get yet. */
 
-    int next_fd;
-    int exit_status;
 
-    bool load_result;
+    /* added in USERPROG */
+    tid_t p_tid;			/* Parent's identifier. */
+    int next_fd;			/* reserved file descriptor */
+    int exit_status;			/* exit status */
+
+    bool load_result;			/* load result */
+
+    struct list file_list;
+    struct list_elem child_elem;	/* List element for child list */
+    struct list child_list;		/* List for child processes */
 
     struct semaphore end_sema;
     struct semaphore load_sema;
@@ -113,9 +116,11 @@ struct thread
     struct file *f;
 
 
+
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
+
 #endif
 
     /* Owned by thread.c. */

@@ -140,9 +140,7 @@ process_exit (void)
   struct thread *curr = thread_current ();
   uint32_t *pd;
 
-
-
-
+  file_close(curr->f);
 
   //printf("(process_exit) caller : %s, status : %08x\n", curr->name, curr->status);
 
@@ -293,7 +291,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
     }
 
   t->f = file;
-
+  file_deny_write(file);
   lock_release(&filesys_lock);
 
   /* Read and verify executable header. */
@@ -334,8 +332,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
         case PT_DYNAMIC:
         case PT_INTERP:
         case PT_SHLIB:
-	  file_allow_write(file);
-          goto done;
+	  goto done;
         case PT_LOAD:
           if (validate_segment (&phdr, file)) 
             {
@@ -380,7 +377,6 @@ load (const char *file_name, void (**eip) (void), void **esp)
 
  done:
   /* We arrive here whether the load is successful or not. */
-  file_close (file);
   return success;
 }
 

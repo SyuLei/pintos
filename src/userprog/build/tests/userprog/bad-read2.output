@@ -1,11 +1,11 @@
-Copying tests/userprog/bad-read2 into /tmp/33iFTu2elo.dsk...
-Writing command line to /tmp/LNkg0KrPNp.dsk...
-qemu -hda /tmp/LNkg0KrPNp.dsk -hdb /tmp/sAzY9B14Az.dsk -hdc /tmp/33iFTu2elo.dsk -m 4 -net none -nographic -monitor null
+Copying tests/userprog/bad-read2 into /tmp/Q5If1pjuJf.dsk...
+Writing command line to /tmp/22Vqp1NT4H.dsk...
+qemu -hda /tmp/22Vqp1NT4H.dsk -hdb /tmp/PkprrHpJm5.dsk -hdc /tmp/Q5If1pjuJf.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put bad-read2 run bad-read2
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
 374 pages available in user pool.
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  103,116,800 loops/s.
 hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 98 sector (49 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -16,8 +16,8 @@ Executing 'bad-read2':
 (bad-read2) begin
 bad-read2: exit(-1)
 Execution of 'bad-read2' complete.
-Timer: 56 ticks
-Thread: 30 idle ticks, 26 kernel ticks, 0 user ticks
+Timer: 52 ticks
+Thread: 30 idle ticks, 22 kernel ticks, 0 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 204 writes
 hd1:0: 98 reads, 0 writes

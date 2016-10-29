@@ -51,9 +51,9 @@ pass tests/userprog/wait-killed
 pass tests/userprog/wait-bad-pid
 pass tests/userprog/multi-recurse
 pass tests/userprog/multi-child-fd
-FAIL tests/userprog/rox-simple
-FAIL tests/userprog/rox-child
-FAIL tests/userprog/rox-multichild
+pass tests/userprog/rox-simple
+pass tests/userprog/rox-child
+pass tests/userprog/rox-multichild
 pass tests/userprog/bad-read
 pass tests/userprog/bad-write
 pass tests/userprog/bad-read2

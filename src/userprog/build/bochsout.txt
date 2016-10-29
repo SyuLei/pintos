@@ -30,7 +30,7 @@
 00000000000i[     ]   SB16 support: no
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support:  
-00000000000i[MEM0 ] allocated memory at 0x2ba121979010. after alignment, vector=0x2ba12197a000
+00000000000i[MEM0 ] allocated memory at 0x7f72ec309010. after alignment, vector=0x7f72ec30a000
 00000000000i[MEM0 ] 4.00MB
 00000000000i[MEM0 ] rom at 0xf0000/65536 ('/usr/local/share/bochs/BIOS-bochs-latest')
 00000000000i[MEM0 ] rom at 0xc0000/32768 ('/usr/local/share/bochs/VGABIOS-lgpl-latest')
@@ -46,7 +46,8 @@
 00000000000i[     ] init_mem of 'extfpuirq' plugin device by virtual method
 00000000000i[     ] init_mem of 'speaker' plugin device by virtual method
 00000000000i[     ] init_dev of 'harddrv' plugin device by virtual method
-00000000000i[HD   ] HD on ata0-0: '/tmp/ZcehkuiyWb.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata0-0: '/tmp/iFHIqz65cM.dsk' 'flat' mode 
+00000000000i[HD   ] HD on ata0-1: 'fs.dsk' 'flat' mode 
 00000000000i[HD   ] Using boot sequence disk, none, none
 00000000000i[HD   ] Floppy boot signature check is enabled
 00000000000i[     ] init_dev of 'keyboard' plugin device by virtual method
@@ -69,31 +70,35 @@
 00000317563i[KBD  ] reset-disable command received
 00000425250i[VBIOS] VGABios $Id: vgabios.c,v 1.63 2005/12/26 19:50:26 vruppert Exp $
 00000428257i[VBIOS] VBE Bios $Id: vbe.c,v 1.48 2005/12/26 19:50:26 vruppert Exp $
-00000737822i[BIOS ] ata0-0: PCHS=1/16/63 translation=none LCHS=1/16/63
-00000786523e[HD   ] ata0: device set to 1 which does not exist
-00000786815e[HD   ] ata1: device set to 0 which does not exist
-00000787108e[HD   ] ata1: device set to 1 which does not exist
-00032994349p[UNMP ] >>PANIC<< Shutdown port: shutdown requested
-00032994349i[SYS  ] Last time is 32
-00032994349i[NGUI ] bx_nogui_gui_c::exit() not implemented yet.
-00032994349i[CPU  ] protected mode
-00032994349i[CPU  ] CS.d_b = 32 bit
-00032994349i[CPU  ] SS.d_b = 32 bit
-00032994349i[CPU  ] | EAX=0000006e  EBX=00000175  ECX=c0116df2  EDX=ffff8900
-00032994349i[CPU  ] | ESP=c0116ddc  EBP=c0116df4  ESI=c010c037  EDI=c010d297
-00032994349i[CPU  ] | IOPL=0 id vip vif ac vm rf nt of df if tf sf zf af pf cf
-00032994349i[CPU  ] | SEG selector     base    limit G D
-00032994349i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
-00032994349i[CPU  ] |  CS:0008( 0001| 0|  0) 00000000 000fffff 1 1
-00032994349i[CPU  ] |  DS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-00032994349i[CPU  ] |  SS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-00032994349i[CPU  ] |  ES:0010( 0002| 0|  0) 00000000 000fffff 1 1
-00032994349i[CPU  ] |  FS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-00032994349i[CPU  ] |  GS:0010( 0002| 0|  0) 00000000 000fffff 1 1
-00032994349i[CPU  ] | EIP=c0100067 (c0100066)
-00032994349i[CPU  ] | CR0=0x80010015 CR1=0 CR2=0x535657e5
-00032994349i[CPU  ] | CR3=0x00113000 CR4=0x00000000
-00032994349i[CPU  ] >> ee
-00032994349i[CPU  ] >> : out dx, al
-00032994349i[     ] restoring default signal behavior
-00032994349i[CTRL ] quit_sim called with exit code 1
+00000737872i[BIOS ] ata0-0: PCHS=1/16/63 translation=none LCHS=1/16/63
+00000793268i[BIOS ] ata0-1: PCHS=4/16/63 translation=none LCHS=4/16/63
+00000841969e[HD   ] ata1: device set to 0 which does not exist
+00000842262e[HD   ] ata1: device set to 1 which does not exist
+00001783900e[HD   ] ata1: device set to 0 which does not exist
+00001784389e[HD   ] ata1: device set to 1 which does not exist
+00001930169e[HD   ] ata1: device set to 0 which does not exist
+00001930672e[HD   ] ata1: device set to 1 which does not exist
+00003587386p[UNMP ] >>PANIC<< Shutdown port: shutdown requested
+00003587386i[SYS  ] Last time is 3
+00003587386i[NGUI ] bx_nogui_gui_c::exit() not implemented yet.
+00003587386i[CPU  ] protected mode
+00003587386i[CPU  ] CS.d_b = 32 bit
+00003587386i[CPU  ] SS.d_b = 32 bit
+00003587386i[CPU  ] | EAX=0000006e  EBX=c010d000  ECX=c002ff86  EDX=ffff8900
+00003587386i[CPU  ] | ESP=c002ff70  EBP=c002ff88  ESI=00000000  EDI=c010e56d
+00003587386i[CPU  ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af pf cf
+00003587386i[CPU  ] | SEG selector     base    limit G D
+00003587386i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
+00003587386i[CPU  ] |  CS:0008( 0001| 0|  0) 00000000 000fffff 1 1
+00003587386i[CPU  ] |  DS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+00003587386i[CPU  ] |  SS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+00003587386i[CPU  ] |  ES:0010( 0002| 0|  0) 00000000 000fffff 1 1
+00003587386i[CPU  ] |  FS:0023( 0004| 0|  3) 00000000 000fffff 1 1
+00003587386i[CPU  ] |  GS:0023( 0004| 0|  3) 00000000 000fffff 1 1
+00003587386i[CPU  ] | EIP=c0100077 (c0100076)
+00003587386i[CPU  ] | CR0=0x80010015 CR1=0 CR2=0x00000000
+00003587386i[CPU  ] | CR3=0x00113000 CR4=0x00000000
+00003587386i[CPU  ] >> ee
+00003587386i[CPU  ] >> : out dx, al
+00003587386i[     ] restoring default signal behavior
+00003587386i[CTRL ] quit_sim called with exit code 1

@@ -1,16 +1,16 @@
 FAIL
 Kernel panic in run: PANIC at ../../threads/interrupt.c:373 in intr_handler(): Unexpected interrupt
-Call stack: 0xc01074dc 0xc0101899 0xc010198f 0xc01078d2 0xc0107c43 0xc0102d21 0xc0109141 0xc01092c3 0xc0106307 0xc0109368 0xc010bcdb 0xc0101071
+Call stack: 0xc010761c 0xc01019d9 0xc0101acf 0xc0107a12 0xc0107d83 0xc0102e61 0xc0109281 0xc0109403 0xc0106447 0xc01094a8 0xc010be1b 0xc01011b6
 Translation of call stack:
-0xc01074dc: debug_panic (.../../lib/kernel/debug.c:34)
-0xc0101899: intr_handler (..../threads/interrupt.c:377)
-0xc010198f: intr_entry (threads/intr-stubs.S:38)
-0xc01078d2: is_head (..../../lib/kernel/list.c:41)
-0xc0107c43: list_insert_ordered (.../../lib/kernel/list.c:465)
-0xc0102d21: lock_acquire (...../../threads/synch.c:233)
-0xc0109141: acquire_console (..../lib/kernel/console.c:97)
-0xc01092c3: vprintf (.../lib/kernel/console.c:131)
-0xc0106307: printf (...uild/../../lib/stdio.c:89)
-0xc0109368: msg (.../tests/threads/tests.c:72)
-0xc010bcdb: block_thread (.../threads/mlfqs-block.c:64)
-0xc0101071: kernel_thread (..../../threads/thread.c:435)
+0xc010761c: debug_panic (.../../lib/kernel/debug.c:34)
+0xc01019d9: intr_handler (..../threads/interrupt.c:377)
+0xc0101acf: intr_entry (threads/intr-stubs.S:38)
+0xc0107a12: is_head (..../../lib/kernel/list.c:41)
+0xc0107d83: list_insert_ordered (.../../lib/kernel/list.c:465)
+0xc0102e61: lock_acquire (...../../threads/synch.c:233)
+0xc0109281: acquire_console (..../lib/kernel/console.c:97)
+0xc0109403: vprintf (.../lib/kernel/console.c:131)
+0xc0106447: printf (...uild/../../lib/stdio.c:89)
+0xc01094a8: msg (.../tests/threads/tests.c:72)
+0xc010be1b: block_thread (.../threads/mlfqs-block.c:64)
+0xc01011b6: kernel_thread (..../../threads/thread.c:442)

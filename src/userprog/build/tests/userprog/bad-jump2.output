@@ -1,11 +1,11 @@
-Copying tests/userprog/bad-jump2 into /tmp/7Sy1d1pqTK.dsk...
-Writing command line to /tmp/vGMcsFPlKX.dsk...
-qemu -hda /tmp/vGMcsFPlKX.dsk -hdb /tmp/kwb57oMeU3.dsk -hdc /tmp/7Sy1d1pqTK.dsk -m 4 -net none -nographic -monitor null
+Copying tests/userprog/bad-jump2 into /tmp/O9iJi3vPjT.dsk...
+Writing command line to /tmp/CVQbsdJ97M.dsk...
+qemu -hda /tmp/CVQbsdJ97M.dsk -hdb /tmp/PVRNDjtvKj.dsk -hdc /tmp/O9iJi3vPjT.dsk -m 4 -net none -nographic -monitor null
 Kernel command line: -q -f put bad-jump2 run bad-jump2
 Pintos booting with 4,096 kB RAM...
 374 pages available in kernel pool.
 374 pages available in user pool.
-Calibrating timer...  3,273,600 loops/s.
+Calibrating timer...  130,048,000 loops/s.
 hd0:0: detected 137 sector (68 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 98 sector (49 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -16,12 +16,12 @@ Executing 'bad-jump2':
 (bad-jump2) begin
 bad-jump2: exit(-1)
 Execution of 'bad-jump2' complete.
-Timer: 46 ticks
-Thread: 30 idle ticks, 16 kernel ticks, 0 user ticks
+Timer: 56 ticks
+Thread: 30 idle ticks, 26 kernel ticks, 0 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 59 reads, 204 writes
 hd1:0: 98 reads, 0 writes
-Console: 779 characters output
+Console: 781 characters output
 Keyboard: 0 keys pressed
 Exception: 1 page faults
 Powering off...

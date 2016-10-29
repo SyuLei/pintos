@@ -1,12 +1,23 @@
 FAIL
 Kernel panic in run: PANIC at ../../userprog/exception.c:101 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc01076fc 0xc010ac18 0xc010accf 0xc0101a7d 0xc0101baf 0xc01071d4 0xc0109f9a 0xc01012a6
+Call stack: 0xc01076fc 0xc010ac48 0xc010acff 0xc0101a7d 0xc0101baf 0xc0109709 0xc010b08d 0xc0101a7d 0xc0101baf 0x804a741 0x80480b9 0x80480da 0x8048235 0x80489a0
 Translation of call stack:
+In kernel.o:
 0xc01076fc: debug_panic (.../../lib/kernel/debug.c:34)
-0xc010ac18: kill (.../userprog/exception.c:106)
-0xc010accf: page_fault (.../userprog/exception.c:164)
+0xc010ac48: kill (.../userprog/exception.c:106)
+0xc010acff: page_fault (.../userprog/exception.c:164)
 0xc0101a7d: intr_handler (..../threads/interrupt.c:361)
 0xc0101baf: intr_entry (threads/intr-stubs.S:38)
-0xc01071d4: memcpy (...ild/../../lib/string.c:16)
-0xc0109f9a: setup_stack (...../userprog/process.c:541)
-0xc01012a6: kernel_thread (..../../threads/thread.c:439)
+0xc0109709: add_file (...../userprog/process.c:644)
+0xc010b08d: sys_open (...../userprog/syscall.c:190)
+0xc0101a7d: intr_handler (..../threads/interrupt.c:361)
+0xc0101baf: intr_entry (threads/intr-stubs.S:38)
+In tests/userprog/no-vm/multi-oom:
+0x0804a741: open (...../lib/user/syscall.c:105)
+0x080480b9: consume_some_resources (...prog/no-vm/multi-oom.c:59)
+0x080480da: consume_some_resources_and_die (...prog/no-vm/multi-oom.c:69)
+0x08048235: main (...rog/no-vm/multi-oom.c:119)
+0x080489a0: _start (.../../../lib/user/entry.c:9)
+Translations of user virtual addresses above are based on a guess at
+the binary to use.  If this guess is incorrect, then those
+translations will be misleading.

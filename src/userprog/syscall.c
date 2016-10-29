@@ -361,8 +361,6 @@ void get_args(struct intr_frame *f, int *args, int num)
     vaddr = (f->esp + (sizeof(void *) * (i + 1)));
 
     check_usable_ptr((const void *)vaddr);
- //   if(!is_valid_ptr(vaddr))
- //     sys_exit(-1);
     
     //printf("esp[%d] : %08x\n", i, (unsigned)(f->esp + (sizeof(void *) * (i + 1))));
     args[i] = *(int *)(f->esp + (sizeof(void *) * (i + 1)));

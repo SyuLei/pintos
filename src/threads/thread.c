@@ -290,8 +290,10 @@ thread_exit (void)
   process_exit ();
 #endif
 
+  /* added in USERPROG */
   sema_up(&(thread_current()->wait_sema));
   sema_down(&(thread_current()->end_sema));
+  /* added in USERPROG */
 
   /* Just set our status to dying and schedule another process.
      We will be destroyed during the call to schedule_tail(). */
@@ -312,10 +314,13 @@ thread_yield (void)
   ASSERT (!intr_context ());
 
   old_level = intr_disable ();
+
   if (curr != idle_thread)
     list_insert_ordered(&ready_list, &curr->elem, (list_less_func *)&higher_priority, NULL);
+
   curr->status = THREAD_READY;
   schedule ();
+
   intr_set_level (old_level);
 }
 
@@ -475,6 +480,14 @@ init_thread (struct thread *t, const char *name, int priority)
   t->stack = (uint8_t *) t + PGSIZE;
 
   list_init(&(t->locks));
+
+  t->priority = priority;
+  t->original_priority = -1;
+  t->magic = THREAD_MAGIC;
+  t->target_lock = NULL;
+
+
+  /* added in USERPROG */
   list_init(&(t->file_list));
   list_init(&(t->child_list));
 
@@ -482,10 +495,6 @@ init_thread (struct thread *t, const char *name, int priority)
   sema_init(&(t->end_sema), 0);
   sema_init(&(t->wait_sema), 0);
 
-  t->priority = priority;
-  t->original_priority = -1;
-  t->magic = THREAD_MAGIC;
-  t->target_lock = NULL;
   t->next_fd = 2;
   t->load_result = false;
   t->f = NULL;
@@ -691,20 +700,13 @@ struct thread* get_child(tid_t tid)
   struct thread *t = thread_current();
   struct list_elem *e;
 
-  //printf("(get_child) find child with pid %d\n", tid);
-
   for(e = list_begin(&(t->child_list));e != list_end(&(t->child_list));e = list_next(e))
   {
     struct thread *child = list_entry(e, struct thread, child_elem);
 
     if(child->tid == tid)
-    {
-      //printf("(get_child) found child\n");
       return child;
-    }
   }
-
-  //printf("(get_child) %s : doesn't have child(%d)\n", t->name, tid);
 
   return NULL;
 }

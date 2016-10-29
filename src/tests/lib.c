@@ -45,7 +45,7 @@ fail (const char *format, ...)
   vmsg (format, args, ": FAILED\n");
   va_end (args);
 
-  exit (1);
+  exit (-1);
 }
 
 static void
