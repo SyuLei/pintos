@@ -22,7 +22,8 @@
 
 static thread_func start_process NO_RETURN;
 static bool load (const char *file_name, void (**eip) (void), void **esp);
-static int get_argc (char *args);
+void push_arguments (char *, char *, void **);
+int get_argc (char *);
 
 /* Starts a new thread running a user program loaded from
    FILENAME.  The new thread may be scheduled (and may even exit)
@@ -142,6 +143,8 @@ process_exit (void)
 
   file_close(curr->f);
 
+  //page_table_destroy (&(curr->page_table));
+
   //printf("(process_exit) caller : %s, status : %08x\n", curr->name, curr->status);
 
   /* Destroy the current process's page directory and switch back
@@ -244,7 +247,7 @@ struct Elf32_Phdr
 #define PF_W 2          /* Writable. */
 #define PF_R 4          /* Readable. */
 
-static bool setup_stack (char *file_name, char *save_ptr, void **esp);
+static bool setup_stack (void **esp);
 static bool validate_segment (const struct Elf32_Phdr *, struct file *);
 static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
                           uint32_t read_bytes, uint32_t zero_bytes,
@@ -367,7 +370,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
     }
 
   /* Set up stack. */
-  if (!setup_stack (token, save_ptr, esp))
+  if (!setup_stack (esp))
     goto done;
 
   /* Start address. */
@@ -377,6 +380,11 @@ load (const char *file_name, void (**eip) (void), void **esp)
 
  done:
   /* We arrive here whether the load is successful or not. */
+  if(!success)
+    file_close(file);
+  else
+    push_arguments(token, save_ptr, esp);
+
   return success;
 }
 
@@ -491,7 +499,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 /* Create a minimal stack by mapping a zeroed page at the top of
    user virtual memory. */
 static bool
-setup_stack (char *file_name, char *save_ptr, void **esp) 
+setup_stack (void **esp) 
 {
   uint8_t *kpage;
   bool success = false;
@@ -506,7 +514,12 @@ setup_stack (char *file_name, char *save_ptr, void **esp)
         palloc_free_page (kpage);
     }
 
+  return success;
+}
 
+void push_arguments (char *file_name, char *save_ptr, void **esp)
+{
+  /* push arguments to stack */
   int argc = get_argc(save_ptr) + 1;
   int arg_size = strlen(file_name) + strlen(save_ptr) + 2;
   int align_arg_size, i;
@@ -522,7 +535,6 @@ setup_stack (char *file_name, char *save_ptr, void **esp)
     align_arg_size = arg_size - (arg_size % 4) + 4;
 
   *esp -= arg_size;
-
 
   /* push arguments */
   for(i = 0;i < argc ;i++)
@@ -586,9 +598,6 @@ setup_stack (char *file_name, char *save_ptr, void **esp)
   /* debug */
   //i = (int)((size_t)PHYS_BASE - (size_t)*esp);
   //hex_dump(0xc0000000 - i , *esp, i, true);
-
-
-  return success;
 }
 
 /* Adds a mapping from user virtual address UPAGE to kernel
@@ -611,7 +620,7 @@ install_page (void *upage, void *kpage, bool writable)
           && pagedir_set_page (t->pagedir, upage, kpage, writable));
 }
 
-static int get_argc (char *args)
+int get_argc (char *args)
 {
   int argc = 0;
   unsigned int i = 0;

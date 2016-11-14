@@ -5,6 +5,7 @@
 #include <list.h>
 #include <stdint.h>
 #include "threads/synch.h"
+#include <hash.h>
 
 /* States in a thread's life cycle. */
 enum thread_status
@@ -115,6 +116,8 @@ struct thread
 
     struct file *f;
 
+    /* added in VM */
+    struct hash page_table;		/* Hash for page_table */
 
 
 #ifdef USERPROG
