@@ -3,9 +3,10 @@
 
 #include "vm/page.h"
 
-void frame_init(void);
+void frame_table_init(void);
 void add_page(struct page *);
-struct page *get_page(void *);
 void remove_page(struct page *);
+struct page* get_page_by_kaddr(void *);
+//struct page* get_evict_page(void);
 
 #endif

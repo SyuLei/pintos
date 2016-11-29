@@ -29,11 +29,13 @@
 #else
 #include "tests/threads/tests.h"
 #endif
+//#include "vm/frame.h"
 #ifdef FILESYS
 #include "devices/disk.h"
 #include "filesys/filesys.h"
 #include "filesys/fsutil.h"
 #endif
+
 
 /* Amount of physical memory, in 4 kB pages. */
 size_t ram_pages;
@@ -103,6 +105,9 @@ main (void)
   exception_init ();
   syscall_init ();
 #endif
+
+  /* added in project 3-1 */
+  //frame_table_init ();
 
   /* Start thread scheduler and enable interrupts. */
   thread_start ();

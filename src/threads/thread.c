@@ -13,7 +13,8 @@
 #ifdef USERPROG
 #include "userprog/process.h"
 #endif
-//#include "vm/page.h"
+#include "vm/page.h"
+//#include "vm/frame.h"
 
 /* Random value for struct thread's `magic' member.
    Used to detect stack overflow.  See the big comment at the top
@@ -183,9 +184,9 @@ thread_create (const char *name, int priority,
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
 
-  list_push_back(&thread_current()->child_list, &(t->child_elem));
+  page_table_init (&(t->page_table));
 
-  //page_table_init (&(t->page_table));
+  list_push_back(&thread_current()->child_list, &(t->child_elem));
 
   /* Stack frame for kernel_thread(). */
   kf = alloc_frame (t, sizeof *kf);

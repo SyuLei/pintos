@@ -1,14 +1,15 @@
 #include "vm/frame.h"
 #include "threads/synch.h"
+#include <debug.h>
 
 struct lock frame_lock;
 struct list frame_table;
 struct list_elem *page_cursor;
 
-void init_frame(void)
+void frame_table_init(void)
 {
   lock_init(&frame_lock);
-  list_init(&frame_list);
+  list_init(&frame_table);
   page_cursor = NULL;
 }
 
@@ -16,10 +17,10 @@ void add_page(struct page *p)
 {
   lock_acquire(&frame_lock);
 
-  ASSERT(p != NULL);
-  ASSERT(p->thread);
+  ASSERT (p != NULL);
+  ASSERT (p->thread != NULL);
 
-  list_push_back(&frame_list, &(p->elem));
+  list_push_back(&frame_table, &(p->elem));
   lock_release(&frame_lock);
 }
 
@@ -46,7 +47,7 @@ struct page* get_page_by_kaddr(void *kaddr)
 
   return NULL;
 }
-
+/*
 struct page* get_evict_page(void)
 {
   struct page *p;
@@ -64,3 +65,4 @@ struct page* get_evict_page(void)
 
   p = list_entry (page_cursor, struct page, elem);
 }
+*/

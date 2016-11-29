@@ -9,6 +9,7 @@
 #include "userprog/process.h"
 #include "devices/input.h"
 #include "threads/vaddr.h"
+#include "vm/page.h"
 
 
 static void syscall_handler (struct intr_frame *);
@@ -59,43 +60,43 @@ syscall_handler (struct intr_frame *f UNUSED)
 
   switch(syscall_number)
   {
-    case SYS_HALT:
+    case SYS_HALT: //0
 	    sys_halt();
 	    break;
-    case SYS_EXIT:
+    case SYS_EXIT: //1
 	    sys_exit(args[0]);
 	    break;
-    case SYS_EXEC:
+    case SYS_EXEC: //2
 	    f->eax = sys_exec((const char *)user_to_kernel_address((const void *)args[0]));
 	    break;
-    case SYS_WAIT:
+    case SYS_WAIT: //3
 	    f->eax = sys_wait(args[0]);
 	    break;
-    case SYS_CREATE:
+    case SYS_CREATE: //4
 	    f->eax = sys_create((const char *)user_to_kernel_address((const void *)args[0]), (unsigned)args[1]);
 	    break;
-    case SYS_REMOVE:
+    case SYS_REMOVE: //5
 	    f->eax = sys_remove((const char *)user_to_kernel_address((const void *)args[0]));
 	    break;
-    case SYS_OPEN:
+    case SYS_OPEN: //6
 	    f->eax = sys_open((const char *)user_to_kernel_address((const void *)args[0]));
 	    break;
-    case SYS_FILESIZE:
+    case SYS_FILESIZE: //7
 	    f->eax = sys_filesize(args[0]);
 	    break;
-    case SYS_READ:
+    case SYS_READ: //8
 	    f->eax = sys_read(args[0], (void *)user_to_kernel_address((const void *)args[1]), (unsigned)args[2]);
 	    break;
-    case SYS_WRITE:
+    case SYS_WRITE: //9
 	    f->eax = sys_write(args[0], (const void *)user_to_kernel_address((const void *)args[1]), (unsigned)args[2]);
 	    break;
-    case SYS_SEEK:
+    case SYS_SEEK: //10
 	    sys_seek(args[0], (unsigned)args[1]);
 	    break;
-    case SYS_TELL:
+    case SYS_TELL: //11
 	    f->eax = sys_tell(args[0]);
 	    break;
-    case SYS_CLOSE:
+    case SYS_CLOSE: //12
 	    sys_close(args[0]);
 	    break;
     default:
@@ -176,7 +177,7 @@ static bool sys_remove(const char *file)
 
 static int sys_open(const char *file)
 {
-  lock_acquire(&filesys_lock);
+  lock_acquire(&filesys_lock); 
 
   struct file *f = filesys_open(file);
 
@@ -253,6 +254,7 @@ static int sys_write(int fd, const void *buffer, unsigned size)
 {
   if(buffer == NULL)
     sys_exit(-1);
+
   
   if(fd == STDOUT_FILENO)
   {
@@ -330,22 +332,17 @@ static void sys_close(int fd)
 
 static bool is_valid_ptr(const void *vaddr)
 {
-  return is_user_vaddr(vaddr + 3) && vaddr >= (void *)0x08048000;
+  return is_user_vaddr(vaddr) && vaddr >= (void *)0x08048000 && get_pte_by_vaddr ((void *)vaddr) != NULL;
 }
 
 static void check_usable_ptr(const void *vaddr)
 {
-  if(!is_valid_ptr(vaddr))
-    sys_exit(-1);
-
   int i;
 
   for(i = 0;i < 4;i++) 
   {
-    void *ptr = pagedir_get_page(thread_current()->pagedir, (const void *)((int)vaddr + i));
-
-    if(ptr == NULL)
-      sys_exit(-1);
+    if (!is_valid_ptr ((const void *)((int)vaddr + i)))
+      sys_exit (-1);
   }
 }
 

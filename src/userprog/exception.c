@@ -5,6 +5,8 @@
 #include "threads/interrupt.h"
 #include "threads/thread.h"
 #include "userprog/syscall.h"
+#include "userprog/process.h"
+#include "vm/page.h"
 
 /* Number of page faults processed. */
 static long long page_fault_cnt;
@@ -149,17 +151,35 @@ page_fault (struct intr_frame *f)
   write = (f->error_code & PF_W) != 0;
   user = (f->error_code & PF_U) != 0;
 
+
+  /* added in project 3-1 */
+  if (!not_present)
+    sys_exit (-1);
+
+  struct page_table_entry *pte;
+
+  pte = get_pte_by_vaddr (fault_addr);
+
+  if (pte == NULL)
+    sys_exit (-1);
+
+  if (!load_pte (pte))
+    sys_exit (-1); 
+
+
+  /*
   if(user)
     sys_exit(-1);
+  */
 
   /* To implement virtual memory, delete the rest of the function
      body, and replace it with code that brings in the page to
      which fault_addr refers. */
-  printf ("Page fault at %p: %s error %s page in %s context.\n",
+/*  printf ("Page fault at %p: %s error %s page in %s context.\n",
           fault_addr,
           not_present ? "not present" : "rights violation",
           write ? "writing" : "reading",
           user ? "user" : "kernel");
-  kill (f);
+  kill (f);*/
 }
 
