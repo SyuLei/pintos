@@ -48,7 +48,7 @@ syscall_handler (struct intr_frame *f UNUSED)
   check_usable_ptr((const void *)f->esp);
 
   int syscall_number = *(int *)(f->esp);
-  int num_of_args[13] = {0, 1, 1, 1, 2, 1, 1, 1, 3, 3, 2, 1, 1};
+  int num_of_args[20] = {0, 1, 1, 1, 2, 1, 1, 1, 3, 3, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1};
   int args[3];
 
   //printf ("(system call) sysnum : %d\n", syscall_number);
@@ -98,6 +98,17 @@ syscall_handler (struct intr_frame *f UNUSED)
     case SYS_CLOSE:
 	    sys_close(args[0]);
 	    break;
+    case SYS_MMAP:
+    case SYS_MUNMAP:
+      printf("This system call is for project3! (%d)\n", *(int *)f->esp);
+      break;
+    case SYS_CHDIR:
+    case SYS_MKDIR:
+    case SYS_READDIR:
+    case SYS_ISDIR:
+    case SYS_INUMBER:
+      printf ("available system call number, but not implemented yet! (%d)\n", *(int *)f->esp);
+      break;
     default:
 	    printf("Undefined system call!\n");
 	    break;
