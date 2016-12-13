@@ -13,7 +13,7 @@
 #define INODE_MAGIC 0x494e4f44
 
 /* Variables for project4 extends */
-#define DIRECT_DISK_ENTRIES 124
+#define DIRECT_DISK_ENTRIES 123
 #define INDIRECT_DISK_ENTRIES (DISK_SECTOR_SIZE / sizeof (disk_sector_t))
 
 enum inode_enum
@@ -45,6 +45,7 @@ struct inode_disk
   {
     off_t length;                       /* File size in bytes. */
     unsigned magic;                     /* Magic number. */
+    uint32_t is_dir;			/* true = directory, false = file */
 
     disk_sector_t direct_map_table[DIRECT_DISK_ENTRIES];/* address of direct blocks */
     disk_sector_t indirect_disk_sec;			/* address of indirect table */
@@ -164,7 +165,7 @@ inode_init (void)
    Returns true if successful.
    Returns false if memory or disk allocation fails. */
 bool
-inode_create (disk_sector_t sector, off_t length)
+inode_create (disk_sector_t sector, off_t length, uint32_t is_dir)
 {
   struct inode_disk *disk_inode = NULL;
   bool success = false;
@@ -184,9 +185,14 @@ inode_create (disk_sector_t sector, off_t length)
       disk_inode->length = 0;
 
       if (!inode_update_file_length (disk_inode, disk_inode->length, length))
-        NOT_REACHED ();
+      {
+	free (disk_inode);
+	return false;
+      }
 
       disk_inode->magic = INODE_MAGIC;
+
+      disk_inode->is_dir = is_dir;
 
       bc_write (sector, disk_inode, 0, DISK_SECTOR_SIZE, 0);
 
@@ -308,7 +314,12 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
     {
       /* Disk sector to read, starting byte offset within sector. */
       disk_sector_t sector_idx = byte_to_sector (&inode_disk, offset);
+
+      if (sector_idx == (disk_sector_t) -1)
+	break;
+
       lock_release (&inode->extend_lock);
+
       int sector_ofs = offset % DISK_SECTOR_SIZE;
 
       /* Bytes left in inode, bytes left in sector, lesser of the two. */
@@ -624,4 +635,17 @@ inode_length (const struct inode *inode)
   bc_read (inode->sector, &inode_disk, 0, DISK_SECTOR_SIZE, 0);
 
   return inode_disk.length;
+}
+
+bool is_inode_dir (const struct inode *inode)
+{
+  struct inode_disk inode_disk;
+
+  if (inode->removed)
+    return false;
+
+  if (!get_disk_inode (inode, &inode_disk))
+    return false;
+
+  return inode_disk.is_dir;
 }

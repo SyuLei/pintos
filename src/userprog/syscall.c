@@ -9,6 +9,10 @@
 #include "userprog/process.h"
 #include "devices/input.h"
 #include "threads/vaddr.h"
+#include "filesys/inode.h"
+#include "filesys/directory.h"
+#include "filesys/file.h"
+#include <string.h>
 
 
 static void syscall_handler (struct intr_frame *);
@@ -31,6 +35,13 @@ static int sys_write(int fd, const void *buffer, unsigned size);
 static void sys_seek(int fd, unsigned position);
 static unsigned sys_tell(int fd);
 static void sys_close(int fd);
+
+/* implemented in project4 */
+static bool sys_chdir (const char *);
+static bool sys_mkdir (const char *);
+static bool sys_readdir (int, char *);
+static bool sys_isdir (int);
+static int sys_inumber (int);
 
 struct lock filesys_lock;
 
@@ -103,12 +114,20 @@ syscall_handler (struct intr_frame *f UNUSED)
       printf("This system call is for project3! (%d)\n", *(int *)f->esp);
       break;
     case SYS_CHDIR:
+	    f->eax = sys_chdir ((const char *)args[0]);
+	    break;
     case SYS_MKDIR:
+	    f->eax = sys_mkdir ((const char *)args[0]);
+	    break;
     case SYS_READDIR:
+	    f->eax = sys_readdir ((int)args[0], (char *)args[1]);
+	    break;
     case SYS_ISDIR:
+	    f->eax = sys_isdir ((int)args[0]);
+	    break;
     case SYS_INUMBER:
-      printf ("available system call number, but not implemented yet! (%d)\n", *(int *)f->esp);
-      break;
+	    f->eax = sys_inumber ((int)args[0]);
+	    break;
     default:
 	    printf("Undefined system call!\n");
 	    break;
@@ -337,7 +356,78 @@ static void sys_close(int fd)
   lock_release(&filesys_lock);
 }
 
+static bool sys_chdir (const char *path_o)
+{
+  char path[PATH_MAX_LEN + 1];
+  strlcpy (path, path_o, PATH_MAX_LEN);
+  strlcat (path, "/0", PATH_MAX_LEN);
 
+  char name[PATH_MAX_LEN + 1];
+  struct dir *dir = parse_path (path, name);
+
+  if (!dir)
+    return false;
+
+  dir_close (thread_current ()->dir);
+  thread_current ()->dir = dir;
+
+  return true;
+}
+
+static bool sys_mkdir (const char *dir)
+{
+  return filesys_create_dir (dir);
+}
+
+static bool sys_readdir (int fd, char *name)
+{
+  struct file *f = get_file (fd);
+
+  if (f == NULL)
+    sys_exit (-1);
+
+  struct inode *inode = file_get_inode (f);
+
+  if (inode == NULL || !is_inode_dir (inode))
+    return false;
+
+  struct dir *dir = dir_open (inode);
+
+  if (dir == NULL)
+    return false;
+
+  int i;
+  bool result = true;
+  off_t *pos = (off_t *)f + 1;
+
+  for (i = 0; (i <= *pos) && result; i++)
+    result = dir_readdir (dir, name);
+
+  if (i > *pos)
+    (*pos)++; 
+
+  return result;
+}
+
+static bool sys_isdir (int fd)
+{
+  struct file *f = get_file (fd);
+
+  if (f == NULL)
+    sys_exit (-1);
+
+  return is_inode_dir (file_get_inode (f));
+}
+
+static int sys_inumber (int fd)
+{
+  struct file *f = get_file (fd);
+
+  if (f == NULL)
+    sys_exit (-1);
+
+  return inode_get_inumber (file_get_inode (f));
+}
 
 static bool is_valid_ptr(const void *vaddr)
 {

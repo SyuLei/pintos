@@ -143,6 +143,8 @@ process_exit (void)
 
   file_close(curr->f);
 
+  dir_close (curr->dir);
+
   //page_table_destroy (&(curr->page_table));
 
   //printf("(process_exit) caller : %s, status : %08x\n", curr->name, curr->status);

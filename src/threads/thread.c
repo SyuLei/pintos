@@ -10,10 +10,11 @@
 #include "threads/palloc.h"
 #include "threads/switch.h"
 #include "threads/vaddr.h"
+#include "filesys/directory.h"
 #ifdef USERPROG
 #include "userprog/process.h"
 #endif
-//#include "vm/page.h"
+
 
 /* Random value for struct thread's `magic' member.
    Used to detect stack overflow.  See the big comment at the top
@@ -182,6 +183,9 @@ thread_create (const char *name, int priority,
   /* Initialize thread. */
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
+
+  if (thread_current ()->dir)
+    t->dir = dir_reopen (thread_current ()->dir);
 
   list_push_back(&thread_current()->child_list, &(t->child_elem));
 
@@ -501,6 +505,9 @@ init_thread (struct thread *t, const char *name, int priority)
   t->next_fd = 2;
   t->load_result = false;
   t->f = NULL;
+
+  /* added in FILESYS */
+  t->dir = NULL;
 }
 
 /* Allocates a SIZE-byte frame at the top of thread T's stack and

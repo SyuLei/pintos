@@ -119,6 +119,9 @@ struct thread
     /* added in VM */
     struct hash page_table;		/* Hash for page_table */
 
+    /* added in FILESYS */
+    struct dir *dir;
+
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
